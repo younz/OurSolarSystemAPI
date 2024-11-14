@@ -2,7 +2,7 @@
 {
     public class Planet
     {
-        public int Id { get; set; }
+        public int Id { get; set; } // primary key 
         public string Name { get; set; }
         public string volumeMeanRadius { get; set; }
         public string density { get; set; }
@@ -49,8 +49,7 @@
         public string minimum_planetary_ir { get; set; }
 
         public string gravitational_parameter { get; set; }
-        // foreignId 
-        public int BarrycenterId { get; set; }
+        public int BarrycenterId { get; set; } // foreign key
 
     }
 }

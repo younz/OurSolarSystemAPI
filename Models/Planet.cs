@@ -2,6 +2,7 @@
 {
     public class Planet
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string volumeMeanRadius { get; set; }
         public string density { get; set; }

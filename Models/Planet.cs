@@ -49,6 +49,7 @@
         public string minimum_planetary_ir { get; set; }
 
         public string gravitational_parameter { get; set; }
+        public List<Moon> Moons { get; set; } = new List<Moon>();
         public int BarrycenterId { get; set; } // foreign key
 
     }

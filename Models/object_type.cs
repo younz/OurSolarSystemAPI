@@ -1,6 +1,6 @@
 ﻿namespace OurSolarSystemAPI.Models
 {
-    public class object_type
+    public class objecttype
     {
         public int ID { get; set; }
         public int name { get; set; }

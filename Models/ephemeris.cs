@@ -29,6 +29,14 @@
 
                 return new DateTime(year, month, day, hour, minute, 0);
             }
+            set
+            {
+                timestamp_day = value.Day.ToString();
+                timestamp_month = value.Month.ToString();
+                timestamp_year = value.Year.ToString();
+                timestamp_hour = value.Hour.ToString();
+                timestamp_minute = value.Minute.ToString();
+            }
         }
     }
 }

@@ -1,15 +1,8 @@
 ﻿namespace OurSolarSystemAPI.Models
 {
-    public class Barycenter
+    public class Barycenter(int id, string name)
     {
-        public int id { get; set; } // primary key
-        public string name { get; set; }
-
-        public Barycenter(int id, string name) 
-        {
-            this.id = id;
-            this.name = name;
-        }
-       
+        public int ID { get; set; } = id;
+        public string Name { get; set; } = name;
     }
 }

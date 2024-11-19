@@ -1,19 +1,15 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using OurSolarSystemAPI.Data;
+using OurSolarSystemAPI.Repository;
+using OurSolarSystemAPI.Models;
 
 namespace OurSolarSystemAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class testsController : ControllerBase
+    public class testsController(OurSolarSystemContext context) : ControllerBase
     {
-        private readonly SolarSystemContext _context;
-
-        public testsController(SolarSystemContext context)
-        {
-            _context = context;
-        }
+        private readonly OurSolarSystemContext _context = context;
 
         // GET: api/planets
         [HttpGet]

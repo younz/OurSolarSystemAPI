@@ -4,31 +4,18 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace OurSolarSystemAPI.Utility
 {
-    public struct MoonIdentifiers
+    public struct MoonIdentifiers(int id, string name, string designation)
     {
-        public int ID;
-        public string Name;
-        public string Designation;
-
-        public MoonIdentifiers(int id, string name, string designation)
-        {
-            ID = id;
-            Name = name;
-            Designation = designation;
-        }
+        public int ID = id;
+        public string Name = name;
+        public string Designation = designation;
     }
 
 
-    public class PlanetContainer
+    public class PlanetContainer(string name, List<MoonIdentifiers> moons)
     {
-        public string Name;
-        public List<MoonIdentifiers> Moons;
-
-        public PlanetContainer(string name, List<MoonIdentifiers> moons)
-        {
-            Name = name;
-            Moons = moons;
-        }
+        public string Name = name;
+        public List<MoonIdentifiers> Moons = moons;
 
         public List<PlanetContainer> InstantiatePlanetAndMoonStructs() 
         {

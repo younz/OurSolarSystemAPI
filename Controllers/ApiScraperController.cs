@@ -1,14 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
 using OurSolarSystemAPI.Utility;
+using OurSolarSystemAPI.Repository;
 
 namespace OurSolarSystemAPI.Controllers;
 
 [ApiController]
 [Route("")]
-public class ApiScraperController : ControllerBase
+public class ApiScraperController(OurSolarSystemContext context) : ControllerBase
 {
-
+    private readonly OurSolarSystemContext _context = context;
 
     [HttpGet("horizon-scraper-moon/{horizonId}")]
     public async Task<IActionResult> GetHorizonMoonData(int horizonId)
@@ -37,7 +38,7 @@ public class ApiScraperController : ControllerBase
     {
         string url = $"https://celestrak.org/NORAD/elements/supplemental/sup-gp.php?INTDES=2023-099&FORMAT=tle";
         var twoLineElementConverter =  new TwoLineElementConverter();
-        List<Dictionary<string, string>> satelliteInfo = twoLineElementConverter.Convert(url);
+        List<Dictionary<string, Object>> satelliteInfo = twoLineElementConverter.Convert(url);
         
         return Ok(new
             {

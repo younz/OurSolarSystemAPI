@@ -13,17 +13,17 @@ namespace OurSolarSystemAPI.Utility {
 
             var satelliteInfo = new Dictionary<string, string>
             {
-                { "NoradId", ExtractData(satinfoDiv, "NORAD ID") },
-                { "IntlCode", ExtractData(satinfoDiv, "Int'l Code") },
-                { "Perigee", ExtractData(satinfoDiv, "Perigee") },
-                { "Apogee", ExtractData(satinfoDiv, "Apogee") },
-                { "Inclination", ExtractData(satinfoDiv, "Inclination") },
-                { "Period", ExtractData(satinfoDiv, "Period") },
-                { "SemiMajorAxis", ExtractData(satinfoDiv, "Semi major axis") },
-                { "Rcs", ExtractData(satinfoDiv, "RCS") },
-                { "LaunchDate", ExtractLaunchDate(satinfoDiv) },
-                { "Source", ExtractData(satinfoDiv, "Source") },
-                { "LaunchSite", ExtractData(satinfoDiv, "Launch site") }
+                { "noradId", ExtractData(satinfoDiv, "NORAD ID") },
+                { "intlCode", ExtractData(satinfoDiv, "Int'l Code") },
+                { "perigee", ExtractData(satinfoDiv, "Perigee") },
+                { "apogee", ExtractData(satinfoDiv, "Apogee") },
+                { "inclination", ExtractData(satinfoDiv, "Inclination") },
+                { "period", ExtractData(satinfoDiv, "Period") },
+                { "semiMajorAxis", ExtractData(satinfoDiv, "Semi major axis") },
+                { "rcs", ExtractData(satinfoDiv, "RCS") },
+                { "launchDate", ExtractLaunchDate(satinfoDiv) },
+                { "source", ExtractData(satinfoDiv, "Source") },
+                { "launchSite", ExtractData(satinfoDiv, "Launch site") }
             };
 
             return satelliteInfo;

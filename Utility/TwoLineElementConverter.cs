@@ -7,27 +7,20 @@ using SGPdotNET.Propagation;
 
 namespace OurSolarSystemAPI.Utility {
 
-    public struct SatelliteDataCelesTrak {
-        public string name;
-        public string noradNumber;
-        public string bStarDragTerm;
-        public Vector3 position;
-        public Vector3 velocity;
-
-        public SatelliteDataCelesTrak(string name, string noradNumber, string bStarDragTerm, Vector3 position, Vector3 velocity) {
-            this.name = name;
-            this.noradNumber = noradNumber;
-            this.bStarDragTerm = bStarDragTerm;
-            this.position = position;
-            this.velocity = velocity;
-        }
+    public struct SatelliteDataCelesTrak(string name, string noradNumber, string bStarDragTerm, Vector3 position, Vector3 velocity)
+    {
+        public string name = name;
+        public string noradNumber = noradNumber;
+        public string bStarDragTerm = bStarDragTerm;
+        public Vector3 position = position;
+        public Vector3 velocity = velocity;
     }
 
     public class TwoLineElementConverter() 
     {
-        public List<Dictionary<string, string>> Convert(string urlCelesTrak) 
+        public List<Dictionary<string, object>> Convert(string urlCelesTrak) 
         {
-            var satellites = new List<Dictionary<string, string>>();
+            var satellites = new List<Dictionary<string, object>>();
             var url = new Uri(urlCelesTrak);
             var provider = new RemoteTleProvider(true, url);
             var tles = provider.GetTles();
@@ -37,13 +30,17 @@ namespace OurSolarSystemAPI.Utility {
                 var sgp4 = new Sgp4(tle);
                 EciCoordinate eciCoords = sgp4.FindPosition(DateTime.Now);
                 satellites.Add(
-                    new Dictionary<string, string>
+                    new Dictionary<string, object>
                     {
                         { "Name", tle.Name },
                         { "NoradNumber", tle.NoradNumber.ToString() },
                         { "BStarDragTerm", tle.BStarDragTerm.ToString() },
-                        { "Position", eciCoords.Position.ToString() },
-                        { "Velocity", eciCoords.Velocity.ToString() }
+                        { "PositionX", eciCoords.Position.X },
+                        { "PositionY", eciCoords.Position.Y },
+                        { "PositionZ", eciCoords.Position.Z },
+                        { "VelocityX", eciCoords.Velocity.X },
+                        { "VelocityY", eciCoords.Velocity.Y },
+                        { "VelocityZ", eciCoords.Velocity.Z }
                     }
                     );
             }

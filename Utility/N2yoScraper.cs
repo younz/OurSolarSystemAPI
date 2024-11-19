@@ -5,7 +5,7 @@ using HtmlAgilityPack;
 namespace OurSolarSystemAPI.Utility {
     public class N2yoScraper() 
     {
-        public Dictionary<string, string> extractSatelliteInfoFromHtml(string htmlContent) 
+        public Dictionary<string, string> ExtractSatelliteInfoFromHtml(string htmlContent) 
         {
             var htmlDoc = new HtmlDocument();
             htmlDoc.LoadHtml(htmlContent);

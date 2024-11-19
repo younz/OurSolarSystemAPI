@@ -1,42 +1,78 @@
 ﻿namespace OurSolarSystemAPI.Models
 {
-    public class ephemeris
+    public class Ephemeris
     {
-        public double position_x { get; set; }
-        public double position_y { get; set; }
-        public double position_z { get; set; }
-        public double velocity_x { get; set; }
-        public double velocity_y { get; set; }
-        public double velocity_z { get; set; }
-        public double epoch { get; set; }
-        public int object_id { get; set; }
-        public int object_type_id { get; set; }
-        public string timestamp_day { get; set; }
-        public string timestamp_month { get; set; }
-        public string timestamp_year { get; set; }
-        public string timestamp_hour { get; set; }
-        public string timestamp_minute { get; set; }
-        public double julian_day_format { get; set; }
+        private double positionX { get; set; }
+        private double positionZ { get; set; }
+        private double positionY { get; set; }
+        private double velocityX { get; set; }
+        private double velocityY { get; set; }
+        private double velocityZ { get; set; }
+        private double epoch { get; set; }
+        private int objectId { get; set; }
+        private int objectTypeId { get; set; }
+        private string timestampDay { get; set; }
+        private string timestampMonth { get; set; }
+        private string timestampYear { get; set; }
+        private string timestampHour { get; set; }
+        private string timestampMinute { get; set; }
+        private double julianDay { get; set; }
         public DateTime Timestamp
         {
             get
             {
-                int year = int.Parse(timestamp_year);
-                int month = int.Parse(timestamp_month);
-                int day = int.Parse(timestamp_day);
-                int hour = int.Parse(timestamp_hour);
-                int minute = int.Parse(timestamp_minute);
+                int year = int.Parse(timestampYear);
+                int month = int.Parse(timestampMonth);
+                int day = int.Parse(timestampDay);
+                int hour = int.Parse(timestampHour);
+                int minute = int.Parse(timestampMinute);
 
                 return new DateTime(year, month, day, hour, minute, 0);
             }
             set
             {
-                timestamp_day = value.Day.ToString();
-                timestamp_month = value.Month.ToString();
-                timestamp_year = value.Year.ToString();
-                timestamp_hour = value.Hour.ToString();
-                timestamp_minute = value.Minute.ToString();
+                timestampDay = value.Day.ToString();
+                timestampMonth = value.Month.ToString();
+                timestampYear = value.Year.ToString();
+                timestampHour = value.Hour.ToString();
+                timestampMinute = value.Minute.ToString();
             }
         }
+
+        public Ephemeris(
+            double positionX,
+            double positionY,
+            double positionZ,
+            double velocityX,
+            double velocityY,
+            double velocityZ,
+            double epoch,
+            int objectId,
+            int objectTypeId,
+            string timestampDay,
+            string timestampMonth,
+            string timestampYear,
+            string timestampHour,
+            string timestampMinute,
+            double julianDay)
+        {
+            this.positionX = positionX;
+            this.positionY = positionY;
+            this.positionZ = positionZ;
+            this.velocityX = velocityX;
+            this.velocityY = velocityY;
+            this.velocityZ = velocityZ;
+            this.epoch = epoch;
+            this.objectId = objectId;
+            this.objectTypeId = objectTypeId;
+            this.timestampDay = timestampDay;
+            this.timestampMonth = timestampMonth;
+            this.timestampYear = timestampYear;
+            this.timestampHour = timestampHour;
+            this.timestampMinute = timestampMinute;
+            this.julianDay = julianDay;
+        }
+
+
     }
 }

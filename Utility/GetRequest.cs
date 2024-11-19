@@ -3,7 +3,7 @@ namespace OurSolarSystemAPI.Utility {
 
     public static class UtilityGetRequest 
     {
-        public static async Task<string> performRequest(string url, HttpClient client)
+        public static async Task<string> PerformRequest(string url, HttpClient client)
         {
             try
             {

@@ -30,7 +30,7 @@ namespace OurSolarSystemAPI.Utility
             Moons = moons;
         }
 
-        public List<PlanetContainer> instantiatePlanetAndMoonStructs() 
+        public List<PlanetContainer> InstantiatePlanetAndMoonStructs() 
         {
             var earthMoons = new List<MoonIdentifiers>
             {

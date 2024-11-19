@@ -25,7 +25,7 @@ namespace OurSolarSystemAPI.Utility {
 
     public class TwoLineElementConverter() 
     {
-        public List<Dictionary<string, string>> convert(string urlCelesTrak) 
+        public List<Dictionary<string, string>> Convert(string urlCelesTrak) 
         {
             var satellites = new List<Dictionary<string, string>>();
             var url = new Uri(urlCelesTrak);

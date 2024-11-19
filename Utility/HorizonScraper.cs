@@ -10,7 +10,7 @@ namespace OurSolarSystemAPI.Utility
     public class HorizonScraper
     {
 
-        public List<Dictionary<string, string>> extractEphemeris(string apiResponse)
+        public List<Dictionary<string, string>> ExtractEphemeris(string apiResponse)
         {
             List<Dictionary<string, string>> ephemerisData = new();
 
@@ -60,7 +60,7 @@ namespace OurSolarSystemAPI.Utility
             return ephemerisData;
         }
 
-        public Dictionary<string, string> extractMoonData(string apiResponse)
+        public Dictionary<string, string> ExtractMoonData(string apiResponse)
         {
             Regex regexMoonName = new Regex(@"Target body name:(.*?){source:");
             Regex regexAllMoonAttributes = new Regex(@"\*{5,}([\s\S]*?)\*{5,}");
@@ -190,7 +190,7 @@ namespace OurSolarSystemAPI.Utility
         }
 
 
-        public void earthData()
+        public void EarthData()
         {
             string id = "399";
             string volMeanRadiusKm = "3389.92 ± 0.04";

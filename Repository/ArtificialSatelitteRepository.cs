@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using OurSolarSystemAPI.Models;
 using OurSolarSystemAPI.Repository;
 
-namespace OurSolarSystemAPI.Repository {
+/* namespace OurSolarSystemAPI.Repository {
 
     public class ArtificialSatelliteRepository() {
 
@@ -26,4 +26,4 @@ namespace OurSolarSystemAPI.Repository {
         }
     }
 
-}
+} */

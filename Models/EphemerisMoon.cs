@@ -1,58 +1,34 @@
 namespace OurSolarSystemAPI.Models
 {
-    public class EphemerisMoon(
-        int id,
-        int moonId,
-        double positionX,
-        double positionY,
-        double positionZ,
-        double velocityX,
-        double velocityY,
-        double velocityZ,
-        double epoch,
-        string timestampDay,
-        string timestampMonth,
-        string timestampYear,
-        string timestampHour,
-        string timestampMinute,
-        double julianDay)
+    public class EphemerisMoon
     {
-        public int Id = id;
-        public int MoonId = moonId; 
-        public double PositionX = positionX;
-        public double PositionZ = positionZ;
-        public double PositionY = positionY;
-        public double VelocityX = velocityX;
-        public double VelocityY = velocityY;
-        public double VelocityZ = velocityZ;
-        public double Epoch = epoch;
-        public string TimestampDay = timestampDay;
-        public string TimestampMonth = timestampMonth;
-        public string TimestampYear = timestampYear;
-        public string TimestampHour = timestampHour;
-        public string TimestampMinute = timestampMinute;
-        public double JulianDay = julianDay;
+        public int Id { get; set; }
+        public int MoonId { get; set; }
+        public required Moon Moon { get; set; }
+        public required double PositionX { get; set; }
+        public required double PositionY { get; set; }
+        public required double PositionZ { get; set; }
+        public required double VelocityX { get; set; }
+        public required double VelocityY { get; set; }
+        public required double VelocityZ { get; set; }
+        public required double JulianDate { get; set; }
+        public required DateTime DateTime { get; set; }
 
-        public DateTime Timestamp
+        public static EphemerisMoon convertEphemerisDictToObject(Dictionary<string, object> ephemerisDict, Moon moon)
         {
-            get
+            return new EphemerisMoon 
             {
-                int year = int.Parse(TimestampYear);
-                int month = int.Parse(TimestampMonth);
-                int day = int.Parse(TimestampDay);
-                int hour = int.Parse(TimestampHour);
-                int minute = int.Parse(TimestampMinute);
-
-                return new DateTime(year, month, day, hour, minute, 0);
-            }
-            set
-            {
-                TimestampDay = value.Day.ToString();
-                TimestampMonth = value.Month.ToString();
-                TimestampYear = value.Year.ToString();
-                TimestampHour = value.Hour.ToString();
-                TimestampMinute = value.Minute.ToString();
-            }
+                Moon = moon,
+                PositionX = (double) ephemerisDict["positionX"],
+                PositionY = (double) ephemerisDict["positionY"],
+                PositionZ = (double) ephemerisDict["positionZ"],
+                VelocityX = (double) ephemerisDict["velocityX"],
+                VelocityY = (double) ephemerisDict["velocityY"],
+                VelocityZ = (double) ephemerisDict["velocityZ"],
+                DateTime = (DateTime) ephemerisDict["dateTime"],
+                JulianDate = (double) ephemerisDict["julianDate"]
+            };
         }
     }
+
 }

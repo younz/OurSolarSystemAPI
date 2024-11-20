@@ -2,50 +2,59 @@ using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using OurSolarSystemAPI.Models;
 
-namespace OurSolarSystemAPI.Repository {
+namespace OurSolarSystemAPI.Repository 
+{
 
-    public class PlanetRepository() {
+    public class PlanetRepository 
+    {
 
-        public void CreatePlanet(OurSolarSystemContext context, Planet planet) 
+        private readonly OurSolarSystemContext _context;
+
+        public PlanetRepository(OurSolarSystemContext context) 
         {
-            context.Planets.Add(planet);
-            context.SaveChanges();
+            _context = context;
         }
 
-        public Planet RequestPlanetById(OurSolarSystemContext context, int planetId) 
+        public void CreatePlanet(Planet planet) 
         {
-            return context.Planets.FirstOrDefault(p => p.Id == planetId) ?? throw new Exception($"No planet found with name: {planetId}");
+            _context.Planets.Add(planet);
+            _context.SaveChanges();
         }
 
-        public Planet RequestPlanetByName(OurSolarSystemContext context, string planetName) 
+        public Planet RequestPlanetById(int planetId) 
         {
-            return context.Planets.FirstOrDefault(p => p.Name == planetName) ?? throw new Exception($"No planet found with name: {planetName}");
+            return _context.Planets.FirstOrDefault(p => p.Id == planetId) ?? throw new Exception($"No planet found with name: {planetId}");
+        }
+
+        public Planet RequestPlanetByName(string planetName) 
+        {
+            return _context.Planets.FirstOrDefault(p => p.Name == planetName) ?? throw new Exception($"No planet found with name: {planetName}");
         }
 
 
-        public void AddEphemerisToExistingPlanet(OurSolarSystemContext context, List<EphemerisPlanet> ephemeris, int planetId) 
+        public void AddEphemerisToExistingPlanet(List<EphemerisPlanet> ephemeris, int horizonId) 
         {
-            var planet = context.Planets.FirstOrDefault(p => p.Id == planetId);
+            var planet = _context.Planets.FirstOrDefault(p => p.HorizonId == horizonId);
             if (planet != null)
             {
                 foreach (var data in ephemeris) 
                 {
                     planet.Ephemeris.Add(data);
                 }
-                context.SaveChanges();
+                _context.SaveChanges();
             }
         }
 
-        public void AddMoonsToExistingPlanet(OurSolarSystemContext context, List<Moon> moons, int planetId) 
+        public void AddMoonsToExistingPlanet(List<Moon> moons, int planetId) 
         {
-            var planet = context.Planets.FirstOrDefault(p => p.Id == planetId);
+            var planet = _context.Planets.FirstOrDefault(p => p.Id == planetId);
             if (planet != null)
             {
                 foreach (var moon in moons) 
                 {
                     planet.Moons.Add(moon);
                 }
-                context.SaveChanges();
+                _context.SaveChanges();
             }
         }
     }

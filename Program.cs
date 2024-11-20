@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using OurSolarSystemAPI.Data;
+using OurSolarSystemAPI.Repository;
+using OurSolarSystemAPI.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,12 +13,26 @@ builder.Services.AddDbContext<OurSolarSystemContext>(options =>
     )
 );
 
+// Register HttpClient
+builder.Services.AddHttpClient();
+
+// Register other services
+builder.Services.AddScoped<HorizonService>();
+builder.Services.AddScoped<BarycenterRepository>();
+builder.Services.AddScoped<HorizonService>();
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<OurSolarSystemContext>();
+        dbContext.Database.EnsureCreated(); // This creates the database if it does not exist
+    }
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -1,8 +1,10 @@
 ﻿namespace OurSolarSystemAPI.Models
 {
-    public class Barycenter(int id, string name)
+    public class Barycenter()
     {
-        public int Id { get; set; } = id;
-        public string Name { get; set; } = name;
+        public int Id { get; set; }
+        public required int HorizonId { get; set; }
+        public required string Name { get; set; }
+        public ICollection<EphemerisBarycenter>? Ephemeris { get; set; }
     }
 }

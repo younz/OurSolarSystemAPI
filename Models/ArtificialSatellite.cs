@@ -2,43 +2,27 @@
 
 namespace OurSolarSystemAPI.Models
 {
-public class ArtificialSatellite(
-    int id,
-    int planetId,
-    Planet planet,
-    int launchDateDay,
-    int launchDateMonth,
-    int launchDateYear,
-    int launchSite,
-    int source,
-    int noradId,
-    string nssdcId,
-    int perigee,
-    int apogee,
-    int inclination,
-    int period,
-    int semiMajorAxis,
-    int rcs,
-    string name,
-    ICollection<EphemerisArtificialSatellite> ephemeris)
+    public class ArtificialSatellite
     {
-        public int Id = id;
-        public int PlanetId = planetId;
-        public Planet Planet = planet;
-        public int LaunchDateDay = launchDateDay;
-        public int LaunchDateMonth = launchDateMonth;
-        public int LaunchDateYear = launchDateYear;
-        public int LaunchSite = launchSite;
-        public int Source = source;
-        public int NoradId = noradId;
-        public string NssdcId = nssdcId;
-        public int Perigee = perigee;
-        public int Apogee = apogee;
-        public int Inclination = inclination;
-        public int Period = period;
-        public int SemiMajorAxis = semiMajorAxis;
-        public int Rcs = rcs;
-        public string Name = name;
-        public ICollection<EphemerisArtificialSatellite> Ephemeris = ephemeris;
+        // Properties of the class
+        public int Id { get; set; }
+        public required int PlanetId { get; set; }
+        public required Planet Planet { get; set; }
+        public EphemerisArtificialSatellite? Ephemeris { get; set; }
+        public int? LaunchDateDay { get; set; }
+        public int? LaunchDateMonth { get; set; }
+        public int? LaunchDateYear { get; set; }
+        public int? LaunchSite { get; set; }
+        public int? Source { get; set; }
+        public int? NoradId { get; set; }
+        public string? NssdcId { get; set; }
+        public int? Perigee { get; set; }
+        public int? Apogee { get; set; }
+        public int? Inclination { get; set; }
+        public int? Period { get; set; }
+        public int? SemiMajorAxis { get; set; }
+        public int? Rcs { get; set; }
+        public required string Name { get; set; }
     }
+
 }

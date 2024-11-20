@@ -1,58 +1,34 @@
 ﻿namespace OurSolarSystemAPI.Models
 {
-    public class EphemerisPlanet(
-        int id,
-        int planetId,
-        double positionX,
-        double positionY,
-        double positionZ,
-        double velocityX,
-        double velocityY,
-        double velocityZ,
-        double epoch,
-        string timestampDay,
-        string timestampMonth,
-        string timestampYear,
-        string timestampHour,
-        string timestampMinute,
-        double julianDay)
+    public class EphemerisPlanet
     {
-        public int Id = id;
-        public int PlanetId = planetId; 
-        public double PositionX = positionX;
-        public double PositionZ = positionZ;
-        public double PositionY = positionY;
-        public double VelocityX = velocityX;
-        public double VelocityY = velocityY;
-        public double VelocityZ = velocityZ;
-        public double Epoch = epoch;
-        public string TimestampDay = timestampDay;
-        public string TimestampMonth = timestampMonth;
-        public string TimestampYear = timestampYear;
-        public string TimestampHour = timestampHour;
-        public string TimestampMinute = timestampMinute;
-        public double JulianDay = julianDay;
+        public int Id { get; set; }
+        public int PlanetId { get; set; }
+        public required Planet Planet { get; set; }
+        public required double PositionX { get; set; }
+        public required double PositionY { get; set; }
+        public required double PositionZ { get; set; }
+        public required double VelocityX { get; set; }
+        public required double VelocityY { get; set; }
+        public required double VelocityZ { get; set; }
+        public required DateTime DateTime { get; set; }
+        public required double JulianDate { get; set; }
 
-        public DateTime Timestamp
+        public static EphemerisPlanet convertEphemerisDictToObject(Dictionary<string, object> ephemerisDict, Planet planet)
         {
-            get
+            return new EphemerisPlanet 
             {
-                int year = int.Parse(TimestampYear);
-                int month = int.Parse(TimestampMonth);
-                int day = int.Parse(TimestampDay);
-                int hour = int.Parse(TimestampHour);
-                int minute = int.Parse(TimestampMinute);
-
-                return new DateTime(year, month, day, hour, minute, 0);
-            }
-            set
-            {
-                TimestampDay = value.Day.ToString();
-                TimestampMonth = value.Month.ToString();
-                TimestampYear = value.Year.ToString();
-                TimestampHour = value.Hour.ToString();
-                TimestampMinute = value.Minute.ToString();
-            }
+                Planet = planet,
+                PositionX = (double) ephemerisDict["positionX"],
+                PositionY = (double) ephemerisDict["positionY"],
+                PositionZ = (double) ephemerisDict["positionZ"],
+                VelocityX = (double) ephemerisDict["velocityX"],
+                VelocityY = (double) ephemerisDict["velocityY"],
+                VelocityZ = (double) ephemerisDict["velocityZ"],
+                DateTime = (DateTime) ephemerisDict["dateTime"],
+                JulianDate = (double) ephemerisDict["julianDate"]
+            };
         }
     }
+
 }

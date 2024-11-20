@@ -2,26 +2,23 @@
 
 namespace OurSolarSystemAPI.Models
 {
-    public class Moon(
-        int id,
-        int planetId,
-        Planet planet,
-        string name,
-        string meanRadius,
-        string density,
-        string gravitationalParameter,
-        string geometricAlbedo,
-        ICollection<EphemerisMoon> ephemeris)
+    public class Moon
     {
-    public int Id = id;
-    public int PlanetId = planetId; // foreign key
-    public Planet Planet = planet;
-    public string Name = name;
-    public string MeanRadius = meanRadius;
-    public string Density = density;
-    public string GravitationalParameter = gravitationalParameter;
-    public string GeometricAlbedo = geometricAlbedo;
-    public ICollection<EphemerisMoon> Ephemeris = ephemeris;
+        public int Id { get; set; }
+        public int PlanetId { get; set; }
+        public ICollection<EphemerisMoon>? Ephemeris { get; set; }
+        public required string Name { get; set; }
+        public string? MeanRadius { get; set; }
+        public string? Density { get; set; }
+        public string? Gm { get; set; }
+        public string? SemiMajorAxis { get; set; }
+        public string? GravitationalParameter { get; set; }
+        public string? GeometricAlbedo { get; set; }
+        public string? OrbitalPeriod { get; set; }
+        public string? Eccentricity { get; set; }
+        public string? RotationalPeriod { get; set; }
+        public string? Inclination { get; set; }
     }
+
 
 }

@@ -1,39 +1,64 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
 using OurSolarSystemAPI.Utility;
+using OurSolarSystemAPI.Service;
 using OurSolarSystemAPI.Repository;
-
+using OurSolarSystemAPI.Models;
 namespace OurSolarSystemAPI.Controllers;
 
 [ApiController]
 [Route("")]
-public class ApiScraperController(OurSolarSystemContext context) : ControllerBase
+public class ApiScraperController : ControllerBase
 {
-    private readonly OurSolarSystemContext _context = context;
+    private readonly OurSolarSystemContext _context;
+    private readonly HorizonService _horizonService;
+    private readonly HttpClient _httpClient;
 
-    [HttpGet("horizon-scraper-moon/{horizonId}")]
-    public async Task<IActionResult> GetHorizonMoonData(int horizonId)
+    public ApiScraperController(HorizonService horizonService, OurSolarSystemContext context, HttpClient httpClient) 
     {
-        var httpClient = new HttpClient();
-        var horizonScraper = new HorizonScraper();
-        string url = $"?format=text&COMMAND='{horizonId}'&center='@0'&ephem_type='Vectors'&vec_table=2&step_size=1d&start_time=2024-01-01&stop_time=2024-01-02";
+        _horizonService = horizonService;
+        _context = context;
+        _httpClient = httpClient;
+    }
 
-        string apiResponse = await UtilityGetRequest.PerformRequest(url, httpClient);
-        httpClient.Dispose();
-
-        List<Dictionary<string, string>> ephemeris = horizonScraper.ExtractEphemeris(apiResponse);
-        Dictionary<string, string> moonData = horizonScraper.ExtractMoonData(apiResponse);
+    [HttpGet("horizon-scrape-moon-data/{horizonId}")]
+    public async Task<IActionResult> ScrapeHorizonMoonData(int horizonId)
+    {
 
         return Ok(new
             {
-                moonData = moonData,
-                ephemeris = ephemeris
+                StatusCode = 200
             });
 
     }
 
 
-    [HttpGet("celestrak-scraper-satellite")]
+    [HttpGet("horizon-create-barycenters-db")]
+    public async Task<IActionResult> CreateBarycenterDataDB()
+    {
+        _horizonService.ScrapeAndAddBarycentersToDB(_httpClient);
+
+        return Ok(new
+            {
+                statusCode = 200
+            });
+    }
+
+    [HttpGet("horizon-create-planets")]
+    public IActionResult CreatePlanetDataDB()
+    {
+        _horizonService.AddHardcodedPlanetsToDB();
+
+        return Ok(new
+            {
+                statusCode = 200
+            });
+    }
+
+
+
+
+    [HttpGet("celestrak-scrape-satellite")]
     public IActionResult GetHorizonPlanetData()
     {
         string url = $"https://celestrak.org/NORAD/elements/supplemental/sup-gp.php?INTDES=2023-099&FORMAT=tle";
@@ -46,7 +71,7 @@ public class ApiScraperController(OurSolarSystemContext context) : ControllerBas
             });
     }
 
-    [HttpGet("n2yo-scraper-satellite/{noradNumber}")]
+    [HttpGet("n2yo-scrape-satellite/{noradNumber}")]
     public async Task<IActionResult> GetN2yoSatelliteData(int noradNumber)
     {
         string url = $"https://www.n2yo.com/satellite/?s={noradNumber}";

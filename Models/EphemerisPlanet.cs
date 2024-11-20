@@ -17,8 +17,8 @@
         string timestampMinute,
         double julianDay)
     {
-        public int ID = id;
-        public int PlanetID = planetId; 
+        public int Id = id;
+        public int PlanetId = planetId; 
         public double PositionX = positionX;
         public double PositionZ = positionZ;
         public double PositionY = positionY;

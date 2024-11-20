@@ -17,8 +17,8 @@ namespace OurSolarSystemAPI.Models
         string timestampMinute,
         double julianDay)
     {
-        public int ID = id;
-        public int BarycenterID = barycenterId; 
+        public int Id = id;
+        public int BarycenterId = barycenterId; 
         public double PositionX = positionX;
         public double PositionZ = positionZ;
         public double PositionY = positionY;

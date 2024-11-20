@@ -1,7 +1,11 @@
-﻿namespace OurSolarSystemAPI.Models
+﻿using System.Numerics;
+
+namespace OurSolarSystemAPI.Models
 {
 public class ArtificialSatellite(
+    int id,
     int planetId,
+    Planet planet,
     int launchDateDay,
     int launchDateMonth,
     int launchDateYear,
@@ -15,22 +19,26 @@ public class ArtificialSatellite(
     int period,
     int semiMajorAxis,
     int rcs,
-    string name)
+    string name,
+    ICollection<EphemerisArtificialSatellite> ephemeris)
     {
-        private int PlanetID { get; set; } = planetId;
-        private int LaunchDateDay { get; set; } = launchDateDay;
-        private int LaunchDateMonth { get; set; } = launchDateMonth;
-        private int LaunchDateYear { get; set; } = launchDateYear;
-        private int LaunchSite { get; set; } = launchSite;
-        private int Source { get; set; } = source;
-        private int NoradId { get; set; } = noradId;
-        private string NssdcId { get; set; } = nssdcId;
-        private int Perigee { get; set; } = perigee;
-        private int Apogee { get; set; } = apogee;
-        private int Inclination { get; set; } = inclination;
-        private int Period { get; set; } = period;
-        private int SemiMajorAxis { get; set; } = semiMajorAxis;
-        private int Rcs { get; set; } = rcs;
-        private string Name { get; set; } = name;
+        public int Id = id;
+        public int PlanetId = planetId;
+        public Planet Planet = planet;
+        public int LaunchDateDay = launchDateDay;
+        public int LaunchDateMonth = launchDateMonth;
+        public int LaunchDateYear = launchDateYear;
+        public int LaunchSite = launchSite;
+        public int Source = source;
+        public int NoradId = noradId;
+        public string NssdcId = nssdcId;
+        public int Perigee = perigee;
+        public int Apogee = apogee;
+        public int Inclination = inclination;
+        public int Period = period;
+        public int SemiMajorAxis = semiMajorAxis;
+        public int Rcs = rcs;
+        public string Name = name;
+        public ICollection<EphemerisArtificialSatellite> Ephemeris = ephemeris;
     }
 }

@@ -19,7 +19,7 @@ namespace OurSolarSystemAPI.Repository
         {
             modelBuilder.Entity<Planet>(entity =>
             {
-                entity.HasKey(e => e.ID);
+                entity.HasKey(e => e.Id);
                 entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
             });
         }

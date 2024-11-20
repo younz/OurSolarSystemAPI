@@ -2,7 +2,7 @@ namespace OurSolarSystemAPI.Models
 {
     public class EphemerisArtificialSatellite(
         int Id,
-        int satelliteID,
+        int satelliteId,
         double positionX,
         double positionY,
         double positionZ,
@@ -17,8 +17,8 @@ namespace OurSolarSystemAPI.Models
         string timestampMinute,
         double julianDay)
     {
-        public int ID = Id;
-        public int SatelitteID = satelliteID;
+        public int Id = Id;
+        public int SatelitteId = satelliteId;
 
         public double PositionX = positionX;
         public double PositionZ = positionZ;

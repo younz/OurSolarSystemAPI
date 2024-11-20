@@ -1,21 +1,27 @@
-﻿namespace OurSolarSystemAPI.Models
+﻿using System.Collections.Generic;
+
+namespace OurSolarSystemAPI.Models
 {
     public class Moon(
         int id,
+        int planetId,
+        Planet planet,
         string name,
         string meanRadius,
         string density,
         string gravitationalParameter,
         string geometricAlbedo,
-        int planetId)
+        ICollection<EphemerisMoon> ephemeris)
     {
-    public int ID = id;
+    public int Id = id;
+    public int PlanetId = planetId; // foreign key
+    public Planet Planet = planet;
     public string Name = name;
     public string MeanRadius = meanRadius;
     public string Density = density;
     public string GravitationalParameter = gravitationalParameter;
     public string GeometricAlbedo = geometricAlbedo;
-    public int PlanetId = planetId; // foreign key
+    public ICollection<EphemerisMoon> Ephemeris = ephemeris;
     }
 
 }

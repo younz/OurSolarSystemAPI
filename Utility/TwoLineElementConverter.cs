@@ -3,6 +3,7 @@ using SGPdotNET.CoordinateSystem;
 using SGPdotNET.Util;
 using SGPdotNET.TLE;
 using SGPdotNET.Propagation;
+using OurSolarSystemAPI.Models;
 
 
 namespace OurSolarSystemAPI.Utility {
@@ -18,10 +19,11 @@ namespace OurSolarSystemAPI.Utility {
 
     public class TwoLineElementConverter() 
     {
-        public List<Dictionary<string, object>> Convert(string urlCelesTrak) 
+        public List<ArtificialSatellite> Convert(string urlCelesTrak) 
         {
-            var satellites = new List<Dictionary<string, object>>();
+            var satellites = new List<ArtificialSatellite>();
             var url = new Uri(urlCelesTrak);
+            DateTime scrapedAt = DateTime.Now;
             var provider = new RemoteTleProvider(true, url);
             var tles = provider.GetTles();
 
@@ -29,19 +31,33 @@ namespace OurSolarSystemAPI.Utility {
                 Tle tle = entry.Value; 
                 var sgp4 = new Sgp4(tle);
                 EciCoordinate eciCoords = sgp4.FindPosition(DateTime.Now);
-                satellites.Add(
-                    new Dictionary<string, object>
-                    {
-                        { "Name", tle.Name },
-                        { "NoradNumber", tle.NoradNumber.ToString() },
-                        { "BStarDragTerm", tle.BStarDragTerm.ToString() },
-                        { "PositionX", eciCoords.Position.X },
-                        { "PositionY", eciCoords.Position.Y },
-                        { "PositionZ", eciCoords.Position.Z },
-                        { "VelocityX", eciCoords.Velocity.X },
-                        { "VelocityY", eciCoords.Velocity.Y },
-                        { "VelocityZ", eciCoords.Velocity.Z }
-                    }
+
+                var ephemeris = new EphemerisArtificialSatellite()
+                {
+                    PositionX = eciCoords.Position.X,
+                    PositionY = eciCoords.Position.Y,
+                    PositionZ = eciCoords.Position.Z,
+                    VelocityX = eciCoords.Velocity.X,
+                    VelocityY = eciCoords.Velocity.Y,
+                    VelocityZ = eciCoords.Velocity.Z,
+                    Epoch = tle.Epoch.ToString(),
+                    DateTime = scrapedAt
+                };
+
+                satellites.Add(new ArtificialSatellite() 
+                {
+                    Name = tle.Name,
+                    NoradId = tle.NoradNumber.ToString(),
+                    BStarDragTerm = tle.BStarDragTerm.ToString(),
+                    Ephemeris = ephemeris,
+                    Inclination = tle.Inclination.ToString(),
+                    Apogee = tle.ArgumentPerigee.ToString(),
+                    NssdcId = tle.IntDesignator,
+                    Eccentricity = tle.Eccentricity.ToString(),
+                    MeanAnomaly = tle.MeanAnomaly.ToString(),
+                    OrbitNumber = tle.OrbitNumber.ToString()
+                }
+
                     );
             }
 
@@ -49,6 +65,20 @@ namespace OurSolarSystemAPI.Utility {
         }
 
     }
+
+                        // new Dictionary<string, object>
+                    // {
+                    //     { "Name", tle.Name },
+                    //     { "NoradNumber", tle.NoradNumber.ToString() },
+                    //     { "BStarDragTerm", tle.BStarDragTerm.ToString() },
+                    //     { "PositionX", eciCoords.Position.X },
+                    //     { "PositionY", eciCoords.Position.Y },
+                    //     { "PositionZ", eciCoords.Position.Z },
+                    //     { "VelocityX", eciCoords.Velocity.X },
+                    //     { "VelocityY", eciCoords.Velocity.Y },
+                    //     { "VelocityZ", eciCoords.Velocity.Z },
+                    //     { "dateTime", DateTime.Now}
+                    // }
 
 
 }

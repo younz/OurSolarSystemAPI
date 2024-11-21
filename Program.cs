@@ -19,6 +19,8 @@ builder.Services.AddHttpClient();
 // Register other services
 builder.Services.AddScoped<HorizonService>();
 builder.Services.AddScoped<BarycenterRepository>();
+builder.Services.AddScoped<PlanetRepository>();
+builder.Services.AddScoped<ArtificialSatelliteRepository>();
 builder.Services.AddScoped<HorizonService>();
 
 builder.Services.AddControllers();

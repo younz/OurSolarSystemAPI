@@ -7,11 +7,13 @@ namespace OurSolarSystemAPI.Service
     {
         private readonly BarycenterRepository _barycenterRepo;
         private readonly PlanetRepository _planetRepo;
+        private readonly ArtificialSatelliteRepository _artificialSatelitteRepo;
 
-        public HorizonService(BarycenterRepository barycenterRepo, PlanetRepository planetRepo) 
+        public HorizonService(BarycenterRepository barycenterRepo, PlanetRepository planetRepo, ArtificialSatelliteRepository artificialSatelliteRepo) 
         {
              _barycenterRepo = barycenterRepo;
              _planetRepo = planetRepo;
+             _artificialSatelitteRepo = artificialSatelliteRepo;
         }
 
 
@@ -63,14 +65,11 @@ namespace OurSolarSystemAPI.Service
 
         public async void ScrapeAndAddMoonsToDB(HttpClient httpClient) 
         {
-            var horizonScraper = new HorizonScraper();
             var horizonParser = new HorizonParser();
             List<MoonContainer> planets = MoonContainer.InstantiatePlanetAndMoonStructs();
 
             foreach (var planet in planets) 
             {
-
-                int planetHorizonId = planet.HorizonPlanetId;
                 var moons = new List<Moon>();
                 foreach (var moonDesignators in planet.Moons) 
                 {
@@ -78,20 +77,46 @@ namespace OurSolarSystemAPI.Service
                     string apiResponse = await UtilityGetRequest.PerformRequest(url, httpClient);
                     Moon moon = horizonParser.ExtractMoonData(apiResponse);
                     var ephemeris = new List<EphemerisMoon>();
-            
-
                     List<Dictionary<string, object>> vectorSets = horizonParser.ExtractEphemeris(apiResponse);
-                    // each vector set is converted to a ephemeris object and then added to a list
+
                     foreach (var vectorSet in vectorSets) 
                     {
                         ephemeris.Add(EphemerisMoon.convertEphemerisDictToObject(vectorSet, moon));
                     }
-
                     moon.Ephemeris = ephemeris;
                     moons.Add(moon);
                 }
                 _planetRepo.AddMoonsToExistingPlanet(moons, planet.HorizonPlanetId);
             }
+        }
+
+        public async void ScrapeAndAddArtificialSatellitesToDB(HttpClient httpClient) 
+        {
+            var celestrakScraper = new CelesTrakScraper();
+            var n2yoScraper = new N2yoScraper();
+            string urlStarlinkSatelittes = "https://celestrak.org/NORAD/elements/gp.php?GROUP=starlink&FORMAT=tle";
+
+            List<ArtificialSatellite> satellites = celestrakScraper.ScrapeAndConvertTle(urlStarlinkSatelittes);
+            foreach (var satellite in satellites) 
+            {
+                string url = $"https://www.n2yo.com/satellite/?s={satellite.NoradId}";
+                string htmlContent = await UtilityGetRequest.PerformRequest(url, httpClient);
+                Dictionary<string, string> scrapedSatelliteInfoN2yo = n2yoScraper.ExtractSatelliteInfoFromHtml(htmlContent);
+
+                satellite.LaunchDate = scrapedSatelliteInfoN2yo["launchDate"];
+                satellite.LaunchSite = scrapedSatelliteInfoN2yo["launchSite"];
+                satellite.Period = scrapedSatelliteInfoN2yo["period"];
+                satellite.Rcs = scrapedSatelliteInfoN2yo["rcs"];
+                satellite.SemiMajorAxis = scrapedSatelliteInfoN2yo["semiMajorAxis"];
+                satellite.Perigee = scrapedSatelliteInfoN2yo["perigee"];
+                _artificialSatelitteRepo.AddSatellite(satellite);
+
+            }
+
+            
+
+
+
         }
     }
 }

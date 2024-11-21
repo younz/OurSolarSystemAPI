@@ -4,24 +4,25 @@ namespace OurSolarSystemAPI.Models
 {
     public class ArtificialSatellite
     {
-        // Properties of the class
         public int Id { get; set; }
-        public required int PlanetId { get; set; }
-        public required Planet Planet { get; set; }
+        public int PlanetId { get; set; }
+        public Planet Planet { get; set; }
         public EphemerisArtificialSatellite? Ephemeris { get; set; }
-        public int? LaunchDateDay { get; set; }
-        public int? LaunchDateMonth { get; set; }
-        public int? LaunchDateYear { get; set; }
-        public int? LaunchSite { get; set; }
-        public int? Source { get; set; }
-        public int? NoradId { get; set; }
+        public string? LaunchDate { get; set; }
+        public string? LaunchSite { get; set; }
+        public string? BStarDragTerm { get; set; }
+        public string? Eccentricity { get; set; }
+        public string? MeanAnomaly { get; set; }
+        public string? OrbitNumber { get; set; }
+        public string? Source { get; set; }
+        public string? NoradId { get; set; }
         public string? NssdcId { get; set; }
-        public int? Perigee { get; set; }
-        public int? Apogee { get; set; }
-        public int? Inclination { get; set; }
-        public int? Period { get; set; }
-        public int? SemiMajorAxis { get; set; }
-        public int? Rcs { get; set; }
+        public string? Perigee { get; set; }
+        public string? Apogee { get; set; }
+        public string? Inclination { get; set; }
+        public string? Period { get; set; }
+        public string? SemiMajorAxis { get; set; }
+        public string? Rcs { get; set; }
         public required string Name { get; set; }
     }
 

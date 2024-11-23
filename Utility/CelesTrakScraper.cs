@@ -46,7 +46,6 @@ namespace OurSolarSystemAPI.Utility
                     MeanAnomaly = tle.MeanAnomaly.ToString(),
                     OrbitNumber = tle.OrbitNumber.ToString()
                 }
-
                     );
             }
 

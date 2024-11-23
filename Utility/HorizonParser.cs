@@ -53,7 +53,7 @@ namespace OurSolarSystemAPI.Utility
                     { "dateTime", datetime },
                     { "positionX", positionX },
                     { "positionY", positionY },
-                    { "positonZ", positionZ },
+                    { "positionZ", positionZ },
                     { "velocityX", velocityX },
                     { "velocityY", velocityY },
                     { "velocityZ", velocityZ }

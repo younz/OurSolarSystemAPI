@@ -19,14 +19,14 @@
             return new EphemerisPlanet 
             {
                 Planet = planet,
-                PositionX = (double) ephemerisDict["positionX"],
-                PositionY = (double) ephemerisDict["positionY"],
-                PositionZ = (double) ephemerisDict["positionZ"],
-                VelocityX = (double) ephemerisDict["velocityX"],
-                VelocityY = (double) ephemerisDict["velocityY"],
-                VelocityZ = (double) ephemerisDict["velocityZ"],
+                PositionX = Convert.ToDouble(ephemerisDict["positionX"]),
+                PositionY = Convert.ToDouble(ephemerisDict["positionY"]),
+                PositionZ = Convert.ToDouble(ephemerisDict["positionZ"]),
+                VelocityX = Convert.ToDouble(ephemerisDict["velocityX"]),
+                VelocityY = Convert.ToDouble(ephemerisDict["velocityY"]),
+                VelocityZ = Convert.ToDouble(ephemerisDict["velocityZ"]),
                 DateTime = (DateTime) ephemerisDict["dateTime"],
-                JulianDate = (double) ephemerisDict["julianDate"]
+                JulianDate = Convert.ToDouble(ephemerisDict["julianDate"])
             };
         }
     }

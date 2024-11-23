@@ -6,6 +6,7 @@ namespace OurSolarSystemAPI.Models
     {
         public int Id { get; set; }
         public int PlanetId { get; set; }
+        public Planet Planet { get; set; }
         public ICollection<EphemerisMoon>? Ephemeris { get; set; }
         public required string Name { get; set; }
         public string? MeanRadius { get; set; }

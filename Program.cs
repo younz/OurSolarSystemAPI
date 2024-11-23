@@ -17,11 +17,11 @@ builder.Services.AddDbContext<OurSolarSystemContext>(options =>
 builder.Services.AddHttpClient();
 
 // Register other services
-builder.Services.AddScoped<HorizonService>();
+builder.Services.AddScoped<ScrapingService>();
 builder.Services.AddScoped<BarycenterRepository>();
 builder.Services.AddScoped<PlanetRepository>();
 builder.Services.AddScoped<ArtificialSatelliteRepository>();
-builder.Services.AddScoped<HorizonService>();
+builder.Services.AddScoped<ScrapingService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

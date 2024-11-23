@@ -45,15 +45,17 @@ namespace OurSolarSystemAPI.Repository
             }
         }
 
-        public void AddMoonsToExistingPlanet(List<Moon> moons, int planetId) 
+        public void AddMoonsToExistingPlanet(List<Moon> moons, int horizonId) 
         {
-            var planet = _context.Planets.FirstOrDefault(p => p.Id == planetId);
+            var planet = _context.Planets.FirstOrDefault(p => p.HorizonId == horizonId);
             if (planet != null)
             {
-                foreach (var moon in moons) 
+                if (planet.Moons == null)
                 {
-                    planet.Moons.Add(moon);
+                    planet.Moons = new List<Moon>();
                 }
+
+                planet.Moons.AddRange(moons);
                 _context.SaveChanges();
             }
         }

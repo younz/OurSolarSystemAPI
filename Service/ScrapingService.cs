@@ -3,13 +3,13 @@ using OurSolarSystemAPI.Repository;
 using OurSolarSystemAPI.Utility;
 namespace OurSolarSystemAPI.Service 
 {
-    public class HorizonService 
+    public class ScrapingService 
     {
         private readonly BarycenterRepository _barycenterRepo;
         private readonly PlanetRepository _planetRepo;
         private readonly ArtificialSatelliteRepository _artificialSatelitteRepo;
 
-        public HorizonService(BarycenterRepository barycenterRepo, PlanetRepository planetRepo, ArtificialSatelliteRepository artificialSatelliteRepo) 
+        public ScrapingService(BarycenterRepository barycenterRepo, PlanetRepository planetRepo, ArtificialSatelliteRepository artificialSatelliteRepo) 
         {
              _barycenterRepo = barycenterRepo;
              _planetRepo = planetRepo;
@@ -17,7 +17,7 @@ namespace OurSolarSystemAPI.Service
         }
 
 
-        public async void ScrapeAndAddBarycentersToDB(HttpClient httpClient) 
+        public async Task<Boolean> ScrapeAndAddBarycentersToDB(HttpClient httpClient) 
         {
             var horizonScraper = new HorizonScraper();
             var horizonParser = new HorizonParser();
@@ -26,7 +26,7 @@ namespace OurSolarSystemAPI.Service
             foreach (var barycenter in barycenters) 
             {
                 var ephemeris = new List<EphemerisBarycenter>();
-                string url = $"?format=text&COMMAND='{barycenter.HorizonId}'&center='@0'&ephem_type='Vectors'&vec_table=2&step_size=1d&start_time=2024-01-01&stop_time=2024-01-02";
+                string url = $"https://ssd.jpl.nasa.gov/api/horizons.api?format=text&COMMAND='{barycenter.HorizonId}'&center='@0'&ephem_type='Vectors'&vec_table=2&step_size=1d&start_time=2024-01-01&stop_time=2024-01-02";
                 string apiResponse = await UtilityGetRequest.PerformRequest(url, httpClient);
                 List<Dictionary<string, object>> vectors = horizonParser.ExtractEphemeris(apiResponse);
                 
@@ -38,6 +38,7 @@ namespace OurSolarSystemAPI.Service
                 _barycenterRepo.CreateBarycenter(barycenter);
                 
             }
+            return true;
         }
 
         public void AddHardcodedPlanetsToDB() 
@@ -63,7 +64,7 @@ namespace OurSolarSystemAPI.Service
 
         }
 
-        public async void ScrapeAndAddMoonsToDB(HttpClient httpClient) 
+        public async Task<Boolean> ScrapeAndAddMoonsToDB(HttpClient httpClient) 
         {
             var horizonParser = new HorizonParser();
             List<MoonContainer> planets = MoonContainer.InstantiatePlanetAndMoonStructs();
@@ -73,9 +74,10 @@ namespace OurSolarSystemAPI.Service
                 var moons = new List<Moon>();
                 foreach (var moonDesignators in planet.Moons) 
                 {
-                    string url = $"?format=text&COMMAND='{moonDesignators.ID}'&center='@0'&ephem_type='Vectors'&vec_table=2&step_size=1d&start_time=2024-01-01&stop_time=2024-01-02";
+                    string url = $"https://ssd.jpl.nasa.gov/api/horizons.api?format=text&COMMAND='{moonDesignators.ID}'&center='@0'&ephem_type='Vectors'&vec_table=2&step_size=1d&start_time=2024-01-01&stop_time=2024-01-02";
                     string apiResponse = await UtilityGetRequest.PerformRequest(url, httpClient);
                     Moon moon = horizonParser.ExtractMoonData(apiResponse);
+                    Console.WriteLine("Moon data // " + moon.Name);
                     var ephemeris = new List<EphemerisMoon>();
                     List<Dictionary<string, object>> vectorSets = horizonParser.ExtractEphemeris(apiResponse);
 
@@ -88,13 +90,14 @@ namespace OurSolarSystemAPI.Service
                 }
                 _planetRepo.AddMoonsToExistingPlanet(moons, planet.HorizonPlanetId);
             }
+            return true;
         }
 
-        public async void ScrapeAndAddArtificialSatellitesToDB(HttpClient httpClient) 
+        public async Task<Boolean> ScrapeAndAddArtificialSatellitesToDB(HttpClient httpClient) 
         {
             var celestrakScraper = new CelesTrakScraper();
             var n2yoScraper = new N2yoScraper();
-            string urlStarlinkSatelittes = "https://celestrak.org/NORAD/elements/gp.php?GROUP=starlink&FORMAT=tle";
+            string urlStarlinkSatelittes = "https://celestrak.org/NORAD/elements/gp.php?INTDES=2019-074&FORMAT=tle";
 
             List<ArtificialSatellite> satellites = celestrakScraper.ScrapeAndConvertTle(urlStarlinkSatelittes);
             foreach (var satellite in satellites) 
@@ -102,7 +105,7 @@ namespace OurSolarSystemAPI.Service
                 string url = $"https://www.n2yo.com/satellite/?s={satellite.NoradId}";
                 string htmlContent = await UtilityGetRequest.PerformRequest(url, httpClient);
                 Dictionary<string, string> scrapedSatelliteInfoN2yo = n2yoScraper.ExtractSatelliteInfoFromHtml(htmlContent);
-
+                satellite.PlanetId = 3;
                 satellite.LaunchDate = scrapedSatelliteInfoN2yo["launchDate"];
                 satellite.LaunchSite = scrapedSatelliteInfoN2yo["launchSite"];
                 satellite.Period = scrapedSatelliteInfoN2yo["period"];
@@ -112,11 +115,7 @@ namespace OurSolarSystemAPI.Service
                 _artificialSatelitteRepo.AddSatellite(satellite);
 
             }
-
-            
-
-
-
+            return true;
         }
     }
 }

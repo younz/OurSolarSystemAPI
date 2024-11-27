@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 namespace OurSolarSystemAPI.Utility
 {
-    public class HorizonScraper
+    public class HorizonHardcodedData
     {
         public List<Barycenter> BarycenterData() 
         {

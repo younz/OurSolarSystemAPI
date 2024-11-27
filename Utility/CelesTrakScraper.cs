@@ -33,12 +33,18 @@ namespace OurSolarSystemAPI.Utility
                     DateTime = scrapedAt
                 };
 
+                var tleArtificialSatellite = new TleArtificialSatellite() 
+                {
+                    Tle = tle.ToString(),
+                    ScrapedAt = scrapedAt
+                };
+
                 satellites.Add(new ArtificialSatellite() 
                 {
                     Name = tle.Name,
-                    NoradId = tle.NoradNumber.ToString(),
+                    NoradId = (int) tle.NoradNumber,
                     BStarDragTerm = tle.BStarDragTerm.ToString(),
-                    Ephemeris = ephemeris,
+                    Tle = [tleArtificialSatellite],
                     Inclination = tle.Inclination.ToString(),
                     Apogee = tle.ArgumentPerigee.ToString(),
                     NssdcId = tle.IntDesignator,

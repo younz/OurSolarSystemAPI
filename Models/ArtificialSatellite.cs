@@ -7,7 +7,7 @@ namespace OurSolarSystemAPI.Models
         public int Id { get; set; }
         public int PlanetId { get; set; }
         public Planet Planet { get; set; }
-        public EphemerisArtificialSatellite? Ephemeris { get; set; }
+        public List<TleArtificialSatellite>? Tle { get; set; }
         public string? LaunchDate { get; set; }
         public string? LaunchSite { get; set; }
         public string? BStarDragTerm { get; set; }
@@ -15,7 +15,7 @@ namespace OurSolarSystemAPI.Models
         public string? MeanAnomaly { get; set; }
         public string? OrbitNumber { get; set; }
         public string? Source { get; set; }
-        public string? NoradId { get; set; }
+        public int NoradId { get; set; }
         public string? NssdcId { get; set; }
         public string? Perigee { get; set; }
         public string? Apogee { get; set; }

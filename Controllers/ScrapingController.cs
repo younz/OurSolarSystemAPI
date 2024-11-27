@@ -31,9 +31,9 @@ public class ScrapingController : ControllerBase
 
 
     [HttpGet("scrape-planets")]
-    public IActionResult AddPlanetsToDataDB()
+    public async Task<IActionResult> AddPlanetsToDataDB()
     {
-        _scrapingService.AddHardcodedPlanetsToDB();
+        await _scrapingService.AddHardcodedPlanetsToDB(_httpClient);
 
         return Ok(new
             {

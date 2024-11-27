@@ -28,7 +28,7 @@ namespace OurSolarSystemAPI.Utility {
             var tles = provider.GetTles();
 
             foreach (KeyValuePair<int, Tle> entry in tles) {
-                Tle tle = entry.Value; 
+                Tle tle = entry.Value;
                 var sgp4 = new Sgp4(tle);
                 EciCoordinate eciCoords = sgp4.FindPosition(DateTime.Now);
 
@@ -44,12 +44,18 @@ namespace OurSolarSystemAPI.Utility {
                     DateTime = scrapedAt
                 };
 
+                var tleArtificialSatellite = new TleArtificialSatellite() 
+                {
+                    Tle = tle.ToString(),
+                    ScrapedAt = scrapedAt
+                };
+
                 satellites.Add(new ArtificialSatellite() 
                 {
                     Name = tle.Name,
-                    NoradId = tle.NoradNumber.ToString(),
+                    NoradId = (int)tle.NoradNumber,
                     BStarDragTerm = tle.BStarDragTerm.ToString(),
-                    Ephemeris = ephemeris,
+                    Tle = [tleArtificialSatellite],
                     Inclination = tle.Inclination.ToString(),
                     Apogee = tle.ArgumentPerigee.ToString(),
                     NssdcId = tle.IntDesignator,

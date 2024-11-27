@@ -19,7 +19,7 @@ namespace OurSolarSystemAPI.Service
 
         public async Task<Boolean> ScrapeAndAddBarycentersToDB(HttpClient httpClient) 
         {
-            var horizonScraper = new HorizonScraper();
+            var horizonScraper = new HorizonHardcodedData();
             var horizonParser = new HorizonParser();
             List<Barycenter> barycenters = horizonScraper.BarycenterData();
 
@@ -41,9 +41,10 @@ namespace OurSolarSystemAPI.Service
             return true;
         }
 
-        public void AddHardcodedPlanetsToDB() 
+        public async Task<Boolean> AddHardcodedPlanetsToDB(HttpClient httpClient) 
         {
-            var horizonScraper = new HorizonScraper();
+            var horizonScraper = new HorizonHardcodedData();
+            var horizonParser = new HorizonParser();
             var planets = new List<Planet>
             {
                 horizonScraper.MercuryData(),
@@ -59,9 +60,19 @@ namespace OurSolarSystemAPI.Service
 
             foreach (var planet in planets) 
             {
+                string url = $"https://ssd.jpl.nasa.gov/api/horizons.api?format=text&COMMAND='{planet.HorizonId}'&center='@0'&ephem_type='Vectors'&vec_table=2&step_size=1d&start_time=2024-01-01&stop_time=2024-01-02";
+                string apiResponse = await UtilityGetRequest.PerformRequest(url, httpClient);
+                List<Dictionary<string, object>> vectorSets = horizonParser.ExtractEphemeris(apiResponse);
+                var ephemeris = new List<EphemerisPlanet>();
+                
+                foreach (var vectorSet in vectorSets) 
+                {
+                    ephemeris.Add(EphemerisPlanet.convertEphemerisDictToObject(vectorSet, planet));
+                }
+                planet.Ephemeris = ephemeris;
                 _planetRepo.CreatePlanet(planet);
             }
-
+            return true;
         }
 
         public async Task<Boolean> ScrapeAndAddMoonsToDB(HttpClient httpClient) 

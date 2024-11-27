@@ -5,8 +5,8 @@ namespace OurSolarSystemAPI.Models
     public class EphemerisArtificialSatellite
     {
         public int Id { get; set; }
-        public int ArtificialSatelliteId { get; set; }
-        public ArtificialSatellite ArtificialSatellite { get; set; }
+        public int TleArtificialSatelliteId { get; set; }
+        public TleArtificialSatellite TleArtificialSatellite { get; set; }
         public required double PositionX { get; set; }
         public required double PositionZ { get; set; }
         public required double PositionY { get; set; }

@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public required int HorizonId { get; set; }
         public List<Moon>? Moons { get; set; }
-        public ICollection<EphemerisPlanet> Ephemeris { get; set; } = [];
+        public List<EphemerisPlanet>? Ephemeris { get; set; }
         public required string Name { get; set; }
         public string? VolumeMeanRadius { get; set; }
         public string? Density { get; set; }

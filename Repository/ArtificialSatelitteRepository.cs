@@ -19,6 +19,19 @@ namespace OurSolarSystemAPI.Repository {
             _context.SaveChanges();
         }
 
+        public ArtificialSatellite? RequestSatelitteByNoradId(int noradId) 
+        {
+            return _context.ArtificialSatellites.FirstOrDefault(s => s.NoradId == noradId);
+        }
+
+        public ArtificialSatellite? RequestSatelliteLocationByNoradIdAndDateTime(int noradId, DateTime dateTime)
+        {
+            return _context.ArtificialSatellites
+                .Where(s => s.NoradId == noradId)
+                .Include(s => s.Tle.Where(t => t.IsArchived == false))
+                .FirstOrDefault();
+        }
+
         // public void AddEphemerisToExistingSatellite(OurSolarSystemContext context, List<EphemerisArtificialSatellite> ephemeris, int satelliteId) 
         // {
         //     var satellite = context.ArtificialSatellites.FirstOrDefault(s => s.Id == satelliteId);

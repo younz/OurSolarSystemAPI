@@ -14,9 +14,9 @@ namespace OurSolarSystemAPI.Models
     public abstract class User
     {
         private string _password;
-        public int Id { get; set; }
-        public string Username { get; set; }
-        public string Password
+        public required int Id { get; set; } 
+        public required string Username { get; set; }
+        public required string Password
         {
             get => _password;
             set => _password = HashPassword(value);
@@ -36,10 +36,11 @@ namespace OurSolarSystemAPI.Models
             }
         }
 
-        public abstract roles Roles {
+        public abstract roles Roles 
+        {
             get;
             set;
-        } = roles.User;
-      
+        } 
+
     }
 }

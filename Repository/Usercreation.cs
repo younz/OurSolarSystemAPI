@@ -6,8 +6,18 @@ namespace OurSolarSystemAPI.Repository
     {
 
         public void Create(User user)
-        {
-            // Add user to database
+        { // this part checks if the user is an admin and if so, it creates an admin object instead of a user object to add to the database
+            if (user.Roles is roles.Admin)
+            {
+                user = new Admin
+                {
+                    Id = user.Id,
+                    Username = user.Username,
+                    Password = user.Password,
+                    Roles = roles.Admin
+                };
+            }
+           
 
         }
 

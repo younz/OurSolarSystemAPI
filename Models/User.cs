@@ -3,6 +3,14 @@ using System.Text;
 
 namespace OurSolarSystemAPI.Models
 {
+    public enum roles
+    {
+        Admin,
+        User,
+        Guest,
+        manintainer,
+        developer
+    }
     public abstract class User
     {
         private string _password;
@@ -14,8 +22,7 @@ namespace OurSolarSystemAPI.Models
             set => _password = HashPassword(value);
         }
 
-
-        public static string HashPassword(string password)
+        public string HashPassword(string password)
         {
             using (SHA256 sha256 = SHA256.Create())
             {
@@ -28,6 +35,11 @@ namespace OurSolarSystemAPI.Models
                 return builder.ToString();
             }
         }
-        public abstract void Role();
+
+        public roles Roles {
+            get;
+            set;
+        } = roles.User;
+      
     }
 }

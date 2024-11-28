@@ -18,10 +18,8 @@ namespace OurSolarSystemAPI.Repository
             {
                 return true;
             }
-            else
-            {
-                throw new Exception("Password is incorrect");
-            }
+
+            throw new Exception("Password is incorrect");
         }
     }
 }

@@ -36,7 +36,7 @@ namespace OurSolarSystemAPI.Models
             }
         }
 
-        public roles Roles {
+        public abstract roles Roles {
             get;
             set;
         } = roles.User;

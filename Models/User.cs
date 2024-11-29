@@ -36,7 +36,7 @@ namespace OurSolarSystemAPI.Models
             }
         }
 
-        public abstract roles Roles 
+        public abstract roles Roles // is abstract because the roles are different for each type of user
         {
             get;
             set;

@@ -2,21 +2,25 @@
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using OurSolarSystemAPI.Utility;
+
 namespace OurSolarSystemAPI.Repository
 {
-    public class Usercreation
+    public class UserRepository(IConfiguration configuration) : ConnectionHelper(configuration: configuration)
     {
+
+
         // this class is used to create users and admins and add them to the database
 
         public async Task<List<User>> GetallUsersAsync()
         {
             List<User> users = new List<User>();
-            string connectionString = "your_connection_string_here"; // Replace with your actual connection string
+             // Replace with your actual connection string
 
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (MySqlConnection connection = new MySqlConnection(ConnectionString))
             {
                 await connection.OpenAsync();
-                string query = "SELECT Id, Username, Password, Roles FROM Users"; // Adjust the query as needed
+                string query = "SELECT * FROM Users"; // Adjust the query as needed
 
                 using (MySqlCommand command = new MySqlCommand(query, connection))
                 {
@@ -24,7 +28,7 @@ namespace OurSolarSystemAPI.Repository
                     {
                         while (await reader.ReadAsync())
                         {
-                            User user = new User
+                            User user = new ConcreteUser // Assuming ConcreteUser is a concrete implementation of User
                             {
                                 Id = reader.GetInt32(0),
                                 Username = reader.GetString(1),
@@ -40,9 +44,9 @@ namespace OurSolarSystemAPI.Repository
             return users;
         }
 
-        public User GetUser(int id)
+        public async Task<User?> GetUserAsync(int id)
         {
-            List<User> users = GetallUsersAsync().Result;
+            List<User> users = await GetallUsersAsync();
             return users.Find(user => user.Id == id);
         }
 
@@ -51,7 +55,12 @@ namespace OurSolarSystemAPI.Repository
             // this part checks if the user is an admin and if so, it creates an admin object instead of a user object to add to the database
             if (user.Roles is roles.Admin)
             {
-                user = new Admin { Id = user.Id, Username = user.Username, Password = user.Password, Roles = roles.Admin };
+                var admin = new Admin { Id = user.Id, Username = user.Username, Password = user.Password, Roles = roles.Admin };
+                // Add admin to the database
+            }
+            else
+            {
+                // Add user to the database
             }
         }
 
@@ -63,6 +72,7 @@ namespace OurSolarSystemAPI.Repository
                 return true;
             }
 
-            throw new Exception("Password is incorrect");
+            throw new UnauthorizedAccessException("Password is incorrect");
         }
     }
+}

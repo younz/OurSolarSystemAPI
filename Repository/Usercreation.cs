@@ -2,7 +2,7 @@
 using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-namespace OurSolarSystemAPI.Utility
+namespace OurSolarSystemAPI.Repository
 {
     public class Usercreation
     {
@@ -42,7 +42,8 @@ namespace OurSolarSystemAPI.Utility
 
         public User GetUser(int id)
         {
-            // Implementation here
+            List<User> users = GetallUsersAsync().Result;
+            return users.Find(user => user.Id == id);
         }
 
         public void CreateUser(User user)

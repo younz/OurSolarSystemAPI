@@ -51,7 +51,11 @@ namespace OurSolarSystemAPI.Repository
             List<User> users = await GetallUsersAsync();
             return users.Find(user => user.Id == id );
         }
-
+        public async Task<User?> GetUserAsyncByName(string username)
+        {
+            List<User> users = await GetallUsersAsync();
+            return users.Find(user => user.Username == username);
+        }
         public async Task<bool> CreateUser(User user)
         {
             using (MySqlConnection connection = new MySqlConnection(ConnectionString))
@@ -84,7 +88,8 @@ namespace OurSolarSystemAPI.Repository
                         command.Parameters.AddWithValue("@Password", user.Password);
                         command.Parameters.AddWithValue("@Roles", user.Roles.ToString());
                         await command.Connection.OpenAsync();
-                        var noOfRow await command.ExecuteNonQueryAsync();
+                        int noOfRow = 0; 
+                        noOfRow= await command.ExecuteNonQueryAsync();
                         if (noOfRow == 1)
                         {
                             return true;
@@ -98,6 +103,27 @@ namespace OurSolarSystemAPI.Repository
 
             }
            
+        }
+        public async Task<bool> UpdateUser(User user)
+        {
+            using (MySqlConnection connection = new MySqlConnection(ConnectionString))
+            {
+                await connection.OpenAsync();
+                string query = "UPDATE Users SET Username = @Username, Password = @Password, Roles = @Roles WHERE Id = @Id";
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Id", user.Id);
+                    command.Parameters.AddWithValue("@Username", user.Username);
+                    command.Parameters.AddWithValue("@Password", user.Password);
+                    command.Parameters.AddWithValue("@Roles", user.Roles.ToString());
+                    var noOfRow = await command.ExecuteNonQueryAsync();
+                    if (noOfRow == 1)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+            }
         }
         public async Task<bool> DeleteUser(int id)
         {
@@ -118,6 +144,14 @@ namespace OurSolarSystemAPI.Repository
                     return false;
                 }
             }
+        }
+        public static bool VerifyUsername(string inputUsername, User user)
+        { 
+            if (user.Username == inputUsername)
+            {
+                return true;
+            }
+            throw new UnauthorizedAccessException("Username is incorrect");
         }
 
         public static bool VerifyPassword(string inputPassword, User user)

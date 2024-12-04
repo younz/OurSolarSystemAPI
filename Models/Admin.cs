@@ -1,4 +1,6 @@
-﻿namespace OurSolarSystemAPI.Models
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace OurSolarSystemAPI.Models
 {
     public class Admin : User
     {

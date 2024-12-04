@@ -1,4 +1,6 @@
-﻿using System.Security.Cryptography;
+﻿using Microsoft.EntityFrameworkCore;
+using OurSolarSystemAPI.Repository;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace OurSolarSystemAPI.Models

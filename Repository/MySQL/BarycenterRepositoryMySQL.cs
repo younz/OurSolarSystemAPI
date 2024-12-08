@@ -2,13 +2,13 @@ using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using OurSolarSystemAPI.Models;
 
-namespace OurSolarSystemAPI.Repository 
+namespace OurSolarSystemAPI.Repository.MySQL  
 {
-    public class BarycenterRepository
+    public class BarycenterRepositoryMySQL
     {
         private readonly OurSolarSystemContext _context;
 
-        public BarycenterRepository(OurSolarSystemContext context) 
+        public BarycenterRepositoryMySQL(OurSolarSystemContext context) 
         {
             _context = context;
         }

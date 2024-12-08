@@ -2,15 +2,15 @@ using System.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using OurSolarSystemAPI.Models;
 
-namespace OurSolarSystemAPI.Repository 
+namespace OurSolarSystemAPI.Repository.MySQL 
 {
 
-    public class PlanetRepository 
+    public class PlanetRepositoryMySQL 
     {
 
         private readonly OurSolarSystemContext _context;
 
-        public PlanetRepository(OurSolarSystemContext context) 
+        public PlanetRepositoryMySQL(OurSolarSystemContext context) 
         {
             _context = context;
         }
@@ -19,6 +19,13 @@ namespace OurSolarSystemAPI.Repository
         {
             _context.Planets.Add(planet);
             _context.SaveChanges();
+        }
+
+        public List<Planet> requestAllPlanetsWithEphemeris() 
+        {
+            return _context.Planets
+            .Include(p => p.Ephemeris)
+            .ToList();
         }
 
         public Planet? RequestPlanetById(int horizonId) 

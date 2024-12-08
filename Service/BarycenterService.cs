@@ -6,9 +6,9 @@ namespace OurSolarSystemAPI.Service
 {
     public class BarycenterService 
     {
-        private readonly BarycenterRepository _barycenterRepo;
+        private readonly BarycenterRepositoryMySQL _barycenterRepo;
 
-        public BarycenterService(BarycenterRepository barycenterRepo) 
+        public BarycenterService(BarycenterRepositoryMySQL barycenterRepo) 
         {
              _barycenterRepo = barycenterRepo;
         }

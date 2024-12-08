@@ -1,14 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using OurSolarSystemAPI.Models;
-using OurSolarSystemAPI.Repository;
 
-namespace OurSolarSystemAPI.Repository {
 
-    public class ArtificialSatelliteRepository 
+namespace OurSolarSystemAPI.Repository.MySQL  {
+
+    public class ArtificialSatelliteRepositoryMySQL 
     {
         private readonly OurSolarSystemContext _context;
 
-        public ArtificialSatelliteRepository(OurSolarSystemContext context) 
+        public ArtificialSatelliteRepositoryMySQL(OurSolarSystemContext context) 
         {
             _context = context;
         }
@@ -30,6 +30,22 @@ namespace OurSolarSystemAPI.Repository {
                 .Where(s => s.NoradId == noradId)
                 .Include(s => s.Tle.Where(t => t.IsArchived == false))
                 .FirstOrDefault();
+        }
+
+        public async Task<bool> CheckIfSatelliteExistsByNoradId(int noradId) 
+        {
+            return await _context.ArtificialSatellites.AnyAsync(s => s.NoradId == noradId);
+        }
+
+        public async Task CreateTleToExistingSatellite(int noradId, TleArtificialSatellite tle) 
+        {
+            var satellite = await _context.ArtificialSatellites
+                                        .Include(s => s.Tle) 
+                                        .FirstOrDefaultAsync(s => s.NoradId == noradId);
+            satellite.Tle.Add(tle);
+
+            await _context.SaveChangesAsync();
+
         }
 
         // public void AddEphemerisToExistingSatellite(OurSolarSystemContext context, List<EphemerisArtificialSatellite> ephemeris, int satelliteId) 

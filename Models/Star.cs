@@ -1,4 +1,6 @@
-﻿namespace OurSolarSystemAPI.Models
+﻿using System.Text.Json.Serialization;
+
+namespace OurSolarSystemAPI.Models
 {
     public class Star(
         int id,
@@ -26,6 +28,7 @@
         string cycle24SunspotMinimum,
         int barycenterId)
     {
+        [JsonIgnore]
         public int id { get; set; } = id;
         public string gravitationalParameter { get; set; } = gravitationalParameter;
 

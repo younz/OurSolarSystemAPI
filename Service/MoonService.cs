@@ -4,9 +4,9 @@ namespace OurSolarSystemAPI.Service
 {
     public class MoonService 
     {
-            private readonly PlanetRepository _planetRepo;
+            private readonly PlanetRepositoryMySQL _planetRepo;
 
-        public MoonService(PlanetRepository planetRepo) 
+        public MoonService(PlanetRepositoryMySQL planetRepo) 
         {
              _planetRepo = planetRepo;
         }

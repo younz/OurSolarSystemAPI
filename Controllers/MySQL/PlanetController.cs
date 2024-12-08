@@ -30,6 +30,15 @@ namespace OurSolarSystemAPI.Controllers.MySQL
 
             return Ok();
         }
+
+        [HttpGet("get-all-planet-locations")]
+        public IActionResult RequestAllPlanetLocations(string name) 
+        {
+            _planetService.RequestPlanetLocationByNameAndDateTime(name, DateTime.Now.Date);
+
+            return Ok();
+        }
+
         
     }
 

@@ -1,12 +1,12 @@
 using OurSolarSystemAPI.Models;
 
-namespace OurSolarSystemAPI.Repository
+namespace OurSolarSystemAPI.Repository.MySQL 
 {
-    public class MoonRepository 
+    public class MoonRepositoryMySQL 
     {
         private readonly OurSolarSystemContext _context;
 
-        public MoonRepository(OurSolarSystemContext context) 
+        public MoonRepositoryMySQL(OurSolarSystemContext context) 
         {
             _context = context;
         }

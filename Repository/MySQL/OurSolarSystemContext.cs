@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OurSolarSystemAPI.Models;
 
-namespace OurSolarSystemAPI.Repository
+namespace OurSolarSystemAPI.Repository.MySQL 
 {
     public class OurSolarSystemContext(DbContextOptions<OurSolarSystemContext> options) : DbContext(options)
     {

@@ -1,9 +1,14 @@
-﻿namespace OurSolarSystemAPI.Models
+﻿using System.Text.Json.Serialization;
+
+namespace OurSolarSystemAPI.Models
 {
     public class EphemerisPlanet
     {
+        [JsonIgnore]
         public int Id { get; set; }
+        [JsonIgnore]
         public int PlanetId { get; set; }
+        [JsonIgnore]
         public required Planet Planet { get; set; }
         public required double PositionX { get; set; }
         public required double PositionY { get; set; }

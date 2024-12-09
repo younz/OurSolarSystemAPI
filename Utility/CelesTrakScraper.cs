@@ -79,10 +79,18 @@ namespace OurSolarSystemAPI.Utility
                     Inclination = tle.Inclination.Degrees,
                     Apogee = tle.ArgumentPerigee.Degrees,
                     NssdcId = tle.IntDesignator,
+<<<<<<< HEAD
                     Eccentricity = tle.Eccentricity,
                     MeanAnomaly = tle.MeanAnomaly.Degrees,
                     OrbitNumber = (int) tle.OrbitNumber
                 });
+=======
+                    Eccentricity = tle.Eccentricity.ToString(),
+                    MeanAnomaly = tle.MeanAnomaly.ToString(),
+                    OrbitNumber = tle.OrbitNumber.ToString()
+                }
+                    );
+>>>>>>> repoanduserYounas
             }
             return satellites;
         }

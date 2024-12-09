@@ -41,6 +41,14 @@ namespace OurSolarSystemAPI.Repository.MySQL
                 .FirstOrDefault();
         }
 
+        public Planet? RequestPlanetLocationByHorizonId(int horizonId)
+        {
+            return _context.Planets
+                .Where(p => p.HorizonId == horizonId)
+                .Include(p => p.Ephemeris)
+                .FirstOrDefault();
+        }
+
         public Planet? RequestPlanetByName(string planetName) 
         {
             return _context.Planets.FirstOrDefault(p => p.Name == planetName);

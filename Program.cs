@@ -6,6 +6,7 @@ using OurSolarSystemAPI.Repository.MySQL;
 using OurSolarSystemAPI.Repository.NEO4J;
 using OurSolarSystemAPI.Service.MySQL;
 using OurSolarSystemAPI.Service.NEO4J;
+using OurSolarSystemAPI.Service;
 using Microsoft.OpenApi.Models;
 using Neo4j.Driver;
 
@@ -58,9 +59,13 @@ builder.Services.AddHttpClient();
 // Register other services
 builder.Services.AddScoped<ScrapingServiceMySQL>();
 builder.Services.AddScoped<ScrapingServiceNEO4J>();
+builder.Services.AddScoped<PlanetServiceMySQL>();
+builder.Services.AddScoped<ScrapingService>();
 builder.Services.AddScoped<BarycenterRepositoryMySQL>();
 builder.Services.AddScoped<BarycenterRepositoryNEO4J>();
 builder.Services.AddScoped<PlanetRepositoryMySQL>();
+builder.Services.AddScoped<MoonRepositoryMySQL>();
+builder.Services.AddScoped<MoonRepositoryNEO4J>();
 builder.Services.AddScoped<PlanetRepositoryNEO4J>();
 builder.Services.AddScoped<ArtificialSatelliteRepositoryMySQL>();
 builder.Services.AddScoped<ArtificialSatelliteRepositoryNEO4J>();

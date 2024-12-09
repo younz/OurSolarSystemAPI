@@ -1,23 +1,28 @@
 ﻿using System.Text.Json.Serialization;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OurSolarSystemAPI.Models
 {
     public class EphemerisPlanet
     {
-        [JsonIgnore]
         public int Id { get; set; }
-        [JsonIgnore]
         public int PlanetId { get; set; }
         [JsonIgnore]
-        public required Planet Planet { get; set; }
-        public required double PositionX { get; set; }
-        public required double PositionY { get; set; }
-        public required double PositionZ { get; set; }
-        public required double VelocityX { get; set; }
-        public required double VelocityY { get; set; }
-        public required double VelocityZ { get; set; }
-        public required DateTime DateTime { get; set; }
-        public required double JulianDate { get; set; }
+        public Planet Planet { get; set; }
+        public double PositionX { get; set; }
+        [NotMapped]
+        public double ScaledPositionX { get; set; }
+         [NotMapped]
+        public double ScaledPositionY { get; set; }
+         [NotMapped]
+        public double ScaledPositionZ { get; set; }
+        public double PositionY { get; set; }
+        public double PositionZ { get; set; }
+        public double VelocityX { get; set; }
+        public double VelocityY { get; set; }
+        public double VelocityZ { get; set; }
+        public DateTime DateTime { get; set; }
+        public double JulianDate { get; set; }
 
         public static EphemerisPlanet convertEphemerisDictToObject(Dictionary<string, object> ephemerisDict, Planet planet)
         {

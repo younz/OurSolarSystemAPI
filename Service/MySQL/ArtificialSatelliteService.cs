@@ -1,5 +1,5 @@
 using OurSolarSystemAPI.Models;
-using OurSolarSystemAPI.Repository;
+using OurSolarSystemAPI.Repository.MySQL;
 
 namespace OurSolarSystemAPI.Service 
 {

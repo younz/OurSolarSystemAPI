@@ -22,7 +22,6 @@ namespace OurSolarSystemAPI.Utility
 
 
             string ephemerisSection = regexEphemerisSection.Match(apiResponse).Groups[0].Value;
-            Console.WriteLine(ephemerisSection);
             MatchCollection julianDates = regexjulianDate.Matches(ephemerisSection);
             MatchCollection dates = regexdate.Matches(ephemerisSection);
 

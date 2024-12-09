@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using OurSolarSystemAPI.Service;
+using OurSolarSystemAPI.Service.MySQL;
 using OurSolarSystemAPI.Repository.MySQL;
 namespace OurSolarSystemAPI.Controllers;
 
@@ -8,10 +8,10 @@ namespace OurSolarSystemAPI.Controllers;
 public class ScrapingControllerMySQL : ControllerBase
 {
     private readonly OurSolarSystemContext _context;
-    private readonly ScrapingService _scrapingService;
+    private readonly ScrapingServiceMySQL _scrapingService;
     private readonly HttpClient _httpClient;
 
-    public ScrapingControllerMySQL(ScrapingService scrapingService, OurSolarSystemContext context, HttpClient httpClient) 
+    public ScrapingControllerMySQL(ScrapingServiceMySQL scrapingService, OurSolarSystemContext context, HttpClient httpClient) 
     {
         _scrapingService = scrapingService;
         _context = context;

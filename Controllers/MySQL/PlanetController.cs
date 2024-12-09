@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
-using OurSolarSystemAPI.Service;
+using OurSolarSystemAPI.Service.MySQL;
+using OurSolarSystemAPI.Models;
 
 namespace OurSolarSystemAPI.Controllers.MySQL 
 {
@@ -8,9 +8,9 @@ namespace OurSolarSystemAPI.Controllers.MySQL
     [Route("api/mysql")]
     public class PlanetController : ControllerBase
     {
-        private readonly PlanetService _planetService;
+        private readonly PlanetServiceMySQL _planetService;
 
-        public PlanetController(PlanetService planetService) 
+        public PlanetController(PlanetServiceMySQL planetService) 
         {
             _planetService = planetService;
         }
@@ -31,12 +31,20 @@ namespace OurSolarSystemAPI.Controllers.MySQL
             return Ok();
         }
 
-        [HttpGet("get-all-planet-locations")]
-        public IActionResult RequestAllPlanetLocations(string name) 
+        [HttpGet("get-planet-locations-by-horizon-id")]
+        public IActionResult RequestPlanetLocationByHorizonId(int horizonId) 
         {
-            _planetService.RequestPlanetLocationByNameAndDateTime(name, DateTime.Now.Date);
+            Planet planet = _planetService.RequestPlanetLocationsByHorizonId(horizonId);
 
-            return Ok();
+            return Ok(planet);
+        }
+
+        [HttpGet("get-all-planet-locations")]
+        public IActionResult RequestAllPlanetLocations() 
+        {
+            List<Planet> planets = _planetService.requestAllPlanetsWithEphemeris();
+
+            return Ok(planets);
         }
 
         

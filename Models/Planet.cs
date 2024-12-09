@@ -5,15 +5,11 @@ namespace OurSolarSystemAPI.Models
 {
     public class Planet
     {
-        [JsonIgnore]
         public int Id { get; set; }
-        [JsonIgnore]
-        public required int HorizonId { get; set; }
-        [JsonIgnore]
+        public int HorizonId { get; set; }
         public List<Moon>? Moons { get; set; }
-        [JsonIgnore]
         public List<EphemerisPlanet>? Ephemeris { get; set; }
-        public required string Name { get; set; }
+        public string Name { get; set; }
         public string? VolumeMeanRadius { get; set; }
         public string? Density { get; set; }
         public string? Mass { get; set; }

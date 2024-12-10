@@ -1,135 +1,97 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OurSolarSystemAPI.Models;
 using OurSolarSystemAPI.Repository;
-using System.Threading.Tasks;
-using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace OurSolarSystemAPI.Controllers;
 
+public class userDTONewUser 
+{
+    [Required]
+    public required string Username { get; set; }
+    [Required]
+    public required string Password { get; set; }
+    [Required]
+    public required string RepeatPassword { get; set; }
+}
+
+public class userDTOUpdatePassword 
+{
+    [Required]
+    public required string Username { get; set; }
+    [Required]
+    public required string Password { get; set; }
+    [Required]
+    public required string NewPassword { get; set; }
+    [Required]
+    public required string RepeatNewPassword { get; set; }
+}
+
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/users")]
 public class UserController : Controller
 {
-    private readonly UserRepository _context;
+    private readonly UserRepositoryMySQL _userRepo;
 
-    public UserController(UserRepository context)
+    public UserController(UserRepositoryMySQL userRepo)
     {
-        _context = context;
+        _userRepo = userRepo;
     }
 
-    [HttpGet] // GET /api/users
-    public async Task<IActionResult> GetAllUsers()
+    [HttpGet("get-all-users")]
+    public async Task<IActionResult> RequestAllUsers()
     {
-        try
-        {
-            var users = await _context.GetallUsersAsync();
-            if (users == null || !users.Any())
-            {
-                return NotFound("No users found.");
-            }
-            return Ok(users);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex);
-            return StatusCode(500, "Internal server error");
-        }
+        List<UserDto> users = await _userRepo.RequestAllUsers();
+
+        return Ok(users);
+ 
     }
-    [HttpGet] // GET /api/user/
-    public async Task<IActionResult> GetUser(int id)
+    [HttpGet("get-user-by-id")]
+    public async Task<IActionResult> RequestUserById(int id)
     {
-        try
-        {
-            var user = await _context.GetUserAsync(id);
-            if (user == null)
-            {
-                return NotFound("User not found.");
-            }
-            return Ok(user);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex);
-            return StatusCode(500, "Internal server error");
-        }
+        UserDto user = await _userRepo.RequestUserById(id);
+
+        return Ok(user);
     }
-    [HttpDelete("{id}")] // DELETE /api/user/{id}
-    public async Task<IActionResult> DeleteUser(int id)
+
+
+
+    [HttpPost("create-user")]
+    public async Task<IActionResult> CreateUser([FromBody] userDTONewUser requestBody)
     {
-        try
-        {
-            var user = await _context.GetUserAsync(id);
-            if (user == null)
-            {
-                return NotFound("User not found.");
-            }
+        (byte[] saltBytes, string salt) = UserEntity.GenerateSalt();
+        string hashedPassword = UserEntity.HashPasswordWithSalt(requestBody.Password, saltBytes);
+        string hashedRepeatPassword = UserEntity.HashPasswordWithSalt(requestBody.RepeatPassword, saltBytes);
 
-            var result = await _context.DeleteUser(id);
-            if (!result)
-            {
-                return StatusCode(500, "Failed to delete the user.");
-            }
+        if (hashedPassword != hashedRepeatPassword) throw new Exception("Passwords doesn't match");
 
-            return NoContent();
-        }
-        catch (Exception ex)
+        var user = new UserEntity
         {
-            Console.WriteLine(ex);
-            return StatusCode(500, "Internal server error");
-        }
+            Username = requestBody.Username,
+            Password = hashedPassword,
+            PasswordSalt = salt,
+            Role = "user"
+        };
+    
+        await _userRepo.CreateUser(user);
+
+        return Ok();
     }
-    [HttpPost] // POST /api/user
-    public async Task<IActionResult> CreateUser([FromBody] User user)
+
+
+
+    [HttpPut("update-user")]
+    public async Task<IActionResult> UpdateUser([FromBody] userDTOUpdatePassword requestBody)
     {
-        try
-        {
-            if (user == null)
-            {
-                return BadRequest("User is null.");
-            }
+        (byte[] saltBytes, string salt) = UserEntity.GenerateSalt();
+        string hashedNewPassword = UserEntity.HashPasswordWithSalt(requestBody.NewPassword, saltBytes);
+        string hashedRepeatNewPassword = UserEntity.HashPasswordWithSalt(requestBody.RepeatNewPassword, saltBytes);
 
-            var result = await _context.CreateUser(user);
-            if (!result)
-            {
-                return StatusCode(500, "Failed to create the user.");
-            }
+        if (hashedNewPassword != hashedRepeatNewPassword) throw new Exception("Passwords doesn't match");
 
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex);
-            return StatusCode(500, "Internal server error");
-        }
-    }
-    [HttpPut("{id}")] // PUT /api/user/{id}
-    public async Task<IActionResult> UpdateUser(int id, [FromBody] User user)
-    {
-        try
-        {
-            if (user == null || user.Id != id)
-            {
-                return BadRequest("User is null or ID mismatch.");
-            }
+        bool response = await _userRepo.UpdateUser(requestBody.Username, requestBody.Password, hashedNewPassword, salt);
 
-            var existingUser = await _context.GetUserAsync(id);
-            if (existingUser == null)
-            {
-                return NotFound("User not found.");
-            }
-
-            var result = await _context.UpdateUser(user);
-            if (!result)
-            {
-                return StatusCode(500, "Failed to update the user.");
-            }
-
-            return NoContent();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex);
-            return StatusCode(500, "Internal server error");
-        }
+        if (response) return Ok();
+        else return BadRequest();
     }
 }

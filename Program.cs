@@ -9,6 +9,7 @@ using OurSolarSystemAPI.Service.NEO4J;
 using OurSolarSystemAPI.Service;
 using Microsoft.OpenApi.Models;
 using Neo4j.Driver;
+using OurSolarSystemAPI.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,6 +70,7 @@ builder.Services.AddScoped<MoonRepositoryNEO4J>();
 builder.Services.AddScoped<PlanetRepositoryNEO4J>();
 builder.Services.AddScoped<ArtificialSatelliteRepositoryMySQL>();
 builder.Services.AddScoped<ArtificialSatelliteRepositoryNEO4J>();
+builder.Services.AddScoped<UserRepositoryMySQL>();
 builder.Services.AddScoped<EphemerisRepositoryNEO4J>();
 builder.Services.AddSingleton(GraphDatabase.Driver("bolt://localhost:7687", AuthTokens.Basic("neo4j", "Password123")));
 

@@ -54,6 +54,15 @@ namespace OurSolarSystemAPI.Repository.MySQL
             return _context.Planets.FirstOrDefault(p => p.Name == planetName);
         }
 
+        public async Task<List<EphemerisPlanet>> RequestPlanetEphemerisWithPagination(int planetId, int pageNumber, int pageSize)
+        {
+            return await _context.EphemerisPlanets
+                .Where(e => e.PlanetId == planetId)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
 
         public void AddEphemerisToExistingPlanet(List<EphemerisPlanet> ephemeris, int horizonId) 
         {

@@ -31,6 +31,19 @@ namespace OurSolarSystemAPI.Service.MySQL
             return planet;
         }
 
+        public async Task<List<EphemerisPlanet>> RequestPlanetEphemerisWithPagination(int horizonId, int pageNumber, int pageSize) 
+        {
+            List<EphemerisPlanet> data = await _planetRepo.RequestPlanetEphemerisWithPagination(horizonId, pageNumber, pageSize);
+
+            foreach (EphemerisPlanet ephemeris in data) 
+                {
+                    ephemeris.ScaledPositionX = ScalePlanetCoordinates(ephemeris.PositionX);
+                    ephemeris.ScaledPositionY = ScalePlanetCoordinates(ephemeris.PositionY);
+                    ephemeris.ScaledPositionZ = ScalePlanetCoordinates(ephemeris.PositionZ);
+                }
+            return data;
+        }
+
 
 
 

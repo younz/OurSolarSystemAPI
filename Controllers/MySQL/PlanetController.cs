@@ -47,6 +47,14 @@ namespace OurSolarSystemAPI.Controllers.MySQL
             return Ok(planets);
         }
 
+        [HttpGet("get-planet-ephemeris-with-pagination-by-horizon-id")]
+        public async Task<IActionResult> RequestAllP(int horizonId, int pageNumber, int pageSize) 
+        {
+            List<EphemerisPlanet> data = await _planetService.RequestPlanetEphemerisWithPagination(horizonId, pageNumber, pageSize);
+
+            return Ok(data);
+        }
+
         
     }
 

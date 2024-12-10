@@ -2,15 +2,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using OurSolarSystemAPI.Repository;
+using OurSolarSystemAPI.Repository.MySQL;
+using OurSolarSystemAPI.Repository.NEO4J;
+using OurSolarSystemAPI.Service.MySQL;
+using OurSolarSystemAPI.Service.NEO4J;
 using OurSolarSystemAPI.Service;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models; // For Swagger and OpenAPI configurations
-using Microsoft.AspNetCore.Authorization; // For [Authorize] attribute
-using Microsoft.AspNetCore.Mvc; // For API controllers and IActionResult
+using Microsoft.OpenApi.Models;
+using Neo4j.Driver;
+using OurSolarSystemAPI.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +26,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("c174ae8c1db30cfd12aa6b013ba99f71445267994b06cd18752c12a874a72afa"))
         };
     });
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost3000", builder =>
+    {
+        builder.WithOrigins("http://localhost:3000") // Allow requests from localhost:3000
+               .AllowAnyHeader() // Allow all headers
+               .AllowAnyMethod(); // Allow all HTTP methods
+    });
+});
 
 builder.Services.AddAuthorization(options =>
 {
@@ -49,11 +58,21 @@ builder.Services.AddDbContext<OurSolarSystemContext>(options =>
 builder.Services.AddHttpClient();
 
 // Register other services
+builder.Services.AddScoped<ScrapingServiceMySQL>();
+builder.Services.AddScoped<ScrapingServiceNEO4J>();
+builder.Services.AddScoped<PlanetServiceMySQL>();
 builder.Services.AddScoped<ScrapingService>();
-builder.Services.AddScoped<BarycenterRepository>();
-builder.Services.AddScoped<PlanetRepository>();
-builder.Services.AddScoped<ArtificialSatelliteRepository>();
-builder.Services.AddScoped<ScrapingService>();
+builder.Services.AddScoped<BarycenterRepositoryMySQL>();
+builder.Services.AddScoped<BarycenterRepositoryNEO4J>();
+builder.Services.AddScoped<PlanetRepositoryMySQL>();
+builder.Services.AddScoped<MoonRepositoryMySQL>();
+builder.Services.AddScoped<MoonRepositoryNEO4J>();
+builder.Services.AddScoped<PlanetRepositoryNEO4J>();
+builder.Services.AddScoped<ArtificialSatelliteRepositoryMySQL>();
+builder.Services.AddScoped<ArtificialSatelliteRepositoryNEO4J>();
+builder.Services.AddScoped<UserRepositoryMySQL>();
+builder.Services.AddScoped<EphemerisRepositoryNEO4J>();
+builder.Services.AddSingleton(GraphDatabase.Driver("bolt://localhost:7687", AuthTokens.Basic("neo4j", "Password123")));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -96,13 +115,14 @@ using (var scope = app.Services.CreateScope())
     }
 
 
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowLocalhost3000");
 
 app.UseHttpsRedirection();
 

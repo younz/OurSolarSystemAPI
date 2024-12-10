@@ -1,11 +1,14 @@
 using SGPdotNET.Observation;
-
+using System.Text.Json.Serialization;
 namespace OurSolarSystemAPI.Models
 {
     public class EphemerisArtificialSatellite
     {
+        [JsonIgnore]
         public int Id { get; set; }
+        [JsonIgnore]
         public int TleArtificialSatelliteId { get; set; }
+        [JsonIgnore]
         public TleArtificialSatellite TleArtificialSatellite { get; set; }
         public required double PositionX { get; set; }
         public required double PositionZ { get; set; }

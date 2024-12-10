@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OurSolarSystemAPI.Models;
 
-namespace OurSolarSystemAPI.Repository
+namespace OurSolarSystemAPI.Repository.MySQL 
 {
     public class OurSolarSystemContext(DbContextOptions<OurSolarSystemContext> options) : DbContext(options)
     {
@@ -10,7 +10,7 @@ namespace OurSolarSystemAPI.Repository
         public DbSet<Planet> Planets { get; set; }
         public DbSet<Moon> Moons { get; set; }
         public DbSet<ArtificialSatellite> ArtificialSatellites  { get; set; }
-
+        public DbSet<UserEntity> Users { get; set; }
         public DbSet<EphemerisBarycenter> EphemerisBarycenters { get; set; }
         public DbSet<EphemerisPlanet> EphemerisPlanets { get; set; }
         public DbSet<EphemerisMoon> EphemerisMoons { get; set; }
@@ -24,6 +24,10 @@ namespace OurSolarSystemAPI.Repository
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
             });
+
+            modelBuilder.Entity<UserEntity>()
+            .HasIndex(u => u.Username)
+            .IsUnique();
         }
     }
 }

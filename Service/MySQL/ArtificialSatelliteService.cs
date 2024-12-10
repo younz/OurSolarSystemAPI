@@ -1,13 +1,13 @@
 using OurSolarSystemAPI.Models;
-using OurSolarSystemAPI.Repository;
+using OurSolarSystemAPI.Repository.MySQL;
 
 namespace OurSolarSystemAPI.Service 
 {
     public class ArtificialSatelliteService 
     {
-        private readonly ArtificialSatelliteRepository _artificialSatelliteRepo;
+        private readonly ArtificialSatelliteRepositoryMySQL _artificialSatelliteRepo;
 
-        public ArtificialSatelliteService(ArtificialSatelliteRepository artificialSatelliteRepo) 
+        public ArtificialSatelliteService(ArtificialSatelliteRepositoryMySQL artificialSatelliteRepo) 
         {
              _artificialSatelliteRepo = artificialSatelliteRepo;
         }
@@ -21,6 +21,15 @@ namespace OurSolarSystemAPI.Service
         {
             return _artificialSatelliteRepo.RequestSatelliteLocationByNoradIdAndDateTime(noradId, dateTime);
         }
+
+        public async Task<bool> CheckIfSatelliteExistsByNoradId(int noradId) 
+        {
+            return await _artificialSatelliteRepo.CheckIfSatelliteExistsByNoradId(noradId);
+        }
+/*         public async Task<bool> AddTleToExistingSatellite(int noradId) 
+        {
+
+        } */
     
     }
 

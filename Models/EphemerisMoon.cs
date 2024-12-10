@@ -1,9 +1,14 @@
+using System.Text.Json.Serialization;
+
 namespace OurSolarSystemAPI.Models
 {
     public class EphemerisMoon
     {
+        [JsonIgnore]
         public int Id { get; set; }
+        [JsonIgnore]
         public int MoonId { get; set; }
+        [JsonIgnore]
         public required Moon Moon { get; set; }
         public required double PositionX { get; set; }
         public required double PositionY { get; set; }

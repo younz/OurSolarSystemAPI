@@ -1,17 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
-using OurSolarSystemAPI.Service;
-using OurSolarSystemAPI.Repository;
+using OurSolarSystemAPI.Service.MySQL;
+using OurSolarSystemAPI.Repository.MySQL;
 namespace OurSolarSystemAPI.Controllers;
 
 [ApiController]
-[Route("")]
-public class ScrapingController : ControllerBase
+[Route("scraper/mysql")]
+public class ScrapingControllerMySQL : ControllerBase
 {
     private readonly OurSolarSystemContext _context;
-    private readonly ScrapingService _scrapingService;
+    private readonly ScrapingServiceMySQL _scrapingService;
     private readonly HttpClient _httpClient;
 
-    public ScrapingController(ScrapingService scrapingService, OurSolarSystemContext context, HttpClient httpClient) 
+    public ScrapingControllerMySQL(ScrapingServiceMySQL scrapingService, OurSolarSystemContext context, HttpClient httpClient) 
     {
         _scrapingService = scrapingService;
         _context = context;
@@ -21,7 +21,7 @@ public class ScrapingController : ControllerBase
     [HttpGet("scrape-barycenters")]
     public async Task<IActionResult> ScrapeAndAddBarycentersToDB()
     {
-        await _scrapingService.ScrapeAndAddBarycentersToDB(_httpClient);
+        await _scrapingService.ScrapeBarycenters(_httpClient);
 
         return Ok(new
             {
@@ -33,7 +33,7 @@ public class ScrapingController : ControllerBase
     [HttpGet("scrape-planets")]
     public async Task<IActionResult> AddPlanetsToDataDB()
     {
-        await _scrapingService.AddHardcodedPlanetsToDB(_httpClient);
+        await _scrapingService.ScrapePlanets(_httpClient);
 
         return Ok(new
             {
@@ -44,7 +44,7 @@ public class ScrapingController : ControllerBase
     [HttpGet("scrape-moons")]
     public async Task<IActionResult> CreateBarycenterDataDB()
     {
-        await _scrapingService.ScrapeAndAddMoonsToDB(_httpClient);
+        await _scrapingService.ScrapeMoons(_httpClient);
 
         return Ok(new
             {
@@ -55,7 +55,7 @@ public class ScrapingController : ControllerBase
     [HttpGet("scrape-satellites")]
     public async Task<IActionResult> GetHorizonPlanetData()
     {
-       await _scrapingService.ScrapeAndAddArtificialSatellitesToDB(_httpClient);
+       await _scrapingService.ScrapeArtificialSatellites(_httpClient);
         
         return Ok(new
             {

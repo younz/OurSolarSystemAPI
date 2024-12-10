@@ -1,12 +1,15 @@
-﻿namespace OurSolarSystemAPI.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
+
+namespace OurSolarSystemAPI.Models
 {
     public class Planet
     {
         public int Id { get; set; }
-        public required int HorizonId { get; set; }
+        public int HorizonId { get; set; }
         public List<Moon>? Moons { get; set; }
         public List<EphemerisPlanet>? Ephemeris { get; set; }
-        public required string Name { get; set; }
+        public string Name { get; set; }
         public string? VolumeMeanRadius { get; set; }
         public string? Density { get; set; }
         public string? Mass { get; set; }
@@ -37,6 +40,10 @@
         public string? MinPlanetaryIRPerihelion { get; set; }
         public string? MinPlanetaryIRAphelion { get; set; }
         public string? MinPlanetaryIRMean { get; set; }
+
+        
     }
+
+    
 
 }

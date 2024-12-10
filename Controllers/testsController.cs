@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using OurSolarSystemAPI.Repository;
+using OurSolarSystemAPI.Repository.MySQL;
 using OurSolarSystemAPI.Models;
 
 namespace OurSolarSystemAPI.Controllers
